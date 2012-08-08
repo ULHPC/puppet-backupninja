@@ -1,0 +1,71 @@
+-*- mode: markdown; mode: auto-fill; fill-column: 80 -*-
+
+    Time-stamp: <Sat 2012-03-17 15:20 svarrette>
+
+-------------------------------------------
+* File:      `README`
+* Module:    backupninja
+* Author:    Hyacinthe Cartiaux (<mailto:hyacinthe.cartiaux@uni.lu>)
+* Copyright: Copyright (c) 2012 Hyacinthe Cartiaux
+* Licence:   GPLv3
+
+------
+# 'backupninja' module -- Configure and manage backupninja
+
+This directory holds the definition of the Puppet module 'backupninja' 
+
+## Description
+
+Configure and manage backupninja
+## Directory organization 
+
+    modules/
+      `-- backupninja/       # Main directory for the 'backupninja' module
+           `-- Modulefile        # Module configuration - cf [here](https://github.com/puppetlabs/puppet-module-tool)
+           `-- README            # This file
+           `-- files/            # Module files
+           `-- lib/              # custom facts/type/provider definitions
+           `-- manifests/
+                `-- init.pp      # Main manifests file
+                `-- classes/     # Hold manifest for backupninja classes/
+                     `-- backupninja.pp         # defines the backupninja class
+                     `-- backupninja-params.pp  # backupninja module variables 
+                `-- definitions/ # Hold manifest for backupninja definitions
+                     `-- backupninja-mydef.pp   # defines the backupninja::mydef definition               
+
+           `-- templates/        # Module ERB template files
+           `-- tests/            # Module testing files (NOT YET IPLEMENTED)
+
+
+## Documentation
+
+Please refer to the header of each manifest files to understand the usage of classes and definitions associated to the 'backupninja' module.
+ 
+Alternatively, generate automatically the documentation via [`puppet doc`](http://docs.puppetlabs.com/man/doc.html) as follows: 
+
+       $> rake doc
+       
+For other information, please refer to:
+
+* the `Moduleinfo` file in this directory 
+* the `README` file of the `puppet-repo` repository. 
+
+## Author/Licence
+
+The backupninja module is 
+
+     Copyright (c) 2012 Hyacinthe Cartiaux[mailto:hyacinthe.cartiaux@uni.lu]. 
+
+It is a free software: you can redistribute it and/or modify it under the terms
+of the GNU General Public License as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU General Public License for more details. 
+You should have received a copy of the GNU General Public License along with
+this program.  If not, see <http://www.gnu.org/licenses/>.  
+
+
+
+
