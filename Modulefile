@@ -1,5 +1,5 @@
 name    'backupninja'
-version '0.0.1'
+version '0.0.2'
 source  'git-admin.uni.lu:puppet-repo.git'
 author  'Hyacinthe Cartiaux (hyacinthe.cartiaux@uni.lu)'
 license 'GPLv3'
@@ -8,7 +8,7 @@ description  'Configure and manage backupninja'
 project_page 'UNKNOWN'
 
 ## List of the classes defined in this module
-classes     ''
+classes     'backupninja::params, backupninja, backupninja::common, backupninja::debian, backupninja::redhat'
 ## List of the definitions defined in this module
 definitions ''
 
