@@ -37,7 +37,7 @@ class backupninja::params {
 
     $loglevel        = "4"
     $reportemail     = "root"
-    $reportsuccess   = "yes"
+    $reportsuccess   = "no"
     $reportinfo      = "no"
     $reportwarning   = "yes"
     $reportspace     = "yes"
