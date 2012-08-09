@@ -59,7 +59,7 @@ ARGUMENTS
 
 OPTIONS
         --rotation <current|day|month|year|disabled>
-              /!\ NOT IMPLEMENTED /!\
+              /!\ NOT IMPLEMENTED YET /!\
                 Specify your rotation time period.
                 'current'  only keep the last backup (1)
                 'day'      keep the last day, month and year backup (4)
@@ -306,10 +306,9 @@ fi
 #########################################
 
 #
-#
 # NOT
 #     IMPLEMENTED
-#
+#                 YET
 #
 
 exit $ERR
