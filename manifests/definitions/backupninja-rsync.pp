@@ -62,7 +62,7 @@ define backupninja::rsync(
     $source_rsync_cmd       = '',
     $source_rsync_options   = '-av --delete',
     $source_bandwidthlimit  = '',
-    $source_remote_rsync    = 'sudo rsync',
+    $source_remote_rsync    = 'rsync',
     $dest_type              = 'local',
     $dest_protocol          = 'ssh',
     $dest_host              = '',
@@ -71,7 +71,7 @@ define backupninja::rsync(
     $dest_id_file           = '',
     $dest_ssh_cmd           = 'ssh',
     $dest_bandwidthlimit    = '',
-    $dest_remote_rsync      = 'sudo rsync'
+    $dest_remote_rsync      = 'rsync'
 )
 {
     include backupninja::params
