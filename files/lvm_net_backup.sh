@@ -35,11 +35,11 @@ SYNOPSIS
                           [--ssh_config <configfile>] [--dry-run] [-f]
 
 DESCRIPTION
-        lvm_net_backup.sh is a ssh based backup tool, that saves distant lvm 
+        lvm_net_backup.sh is a ssh based backup tool, that saves distant lvm
         snapshot in a local tarball. It implements a simple rotation system.
 
 ARGUMENTS
-        --dest <dest. dir> 
+        --dest <dest. dir>
                 Sets the destination directories where the backups is
                 placed.
 
@@ -53,7 +53,7 @@ ARGUMENTS
                 Distant LVM Volume Group on the <host> server
 
         --lv <LVM Logical Volume>
-                Distant LVM Logical Volume on the <host> server, in the 
+                Distant LVM Logical Volume on the <host> server, in the
                 <LVM Volume Group> VG
 
 
@@ -81,13 +81,13 @@ EXAMPLES
                           --vg vg_shiva_domU --lv hpc-disk \\
                           --rotation day
 
-        When this command is launched, it checks if an action must be done 
+        When this command is launched, it checks if an action must be done
         (depending on existing backup), and apply the rotation policy (delete
         old backups)
         This will produce a snapshot of host=shiva/vg=vg_shiva_domU/lv=hpc-disk
         in the directory /data on the local host. The file will be written at
         the following paths :  host/vg/lv/year/month/day/host-vg-lv-ymd.tgz
-        Additionally, the xen-tools logs and the xen configuration file of the 
+        Additionally, the xen-tools logs and the xen configuration file of the
         domU will be saved in the same directory.
 
 AUTHOR
@@ -125,7 +125,7 @@ ask() {
 }
 
 error() {
-  echo "[ERROR] $*" 1>&2 
+  echo "[ERROR] $*" 1>&2
 }
 
 fail() {
@@ -144,9 +144,11 @@ fail() {
 SSH_PORT=22
 ROTATION=current
 DRY_RUN=
-FORCE=n
+FORCE=
 
 SERVER_MOUNT_POINT=/mnt/backup
+
+SNAPSHOT_SIZE="1G"
 
 # Parsing
 opts=$@
@@ -218,7 +220,7 @@ if [ "x$FORCE" != "x-f" ] ; then
   ask "Confirm ? Y/N [N]"
   read confirm
 
-  if [ "x$confirm" != "xY" -a "x$confirm" != "xy"  ] ; then 
+  if [ "x$confirm" != "xY" -a "x$confirm" != "xy"  ] ; then
     report "Exiting now !"
     exit 3
   else
@@ -260,7 +262,7 @@ fi
 ############################################
 
 # Create snapshot
-exec_cmd $DRY_RUN $SSH "sudo lvcreate -s -L 4M -n ${LV}-backupsnap /dev/${VG}/${LV}"
+exec_cmd $DRY_RUN $SSH "sudo lvcreate -s -L ${SNAPSHOT_SIZE} -n ${LV}-backupsnap /dev/${VG}/${LV}"
 if [ "x$?" != "x0" ] ; then
   error "Can't create snapshot ${LV}-backupsnap !"
   ERR=1
@@ -294,7 +296,7 @@ fi
 ###################################
 
 # Delete snapshot
-exec_cmd $DRY_RUN $SSH "sudo lvremove ${FORCE} /dev/${VG}/${LV}-backupsnap"
+exec_cmd $DRY_RUN $SSH "sudo lvremove -f /dev/${VG}/${LV}-backupsnap"
 if [ "x$?" != "x0" ] ; then
   fail "Can't remove snapshot ${LV}-backupsnap !"
   ERR=1
