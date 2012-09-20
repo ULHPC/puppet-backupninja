@@ -41,7 +41,6 @@ define backupninja::distantlvm(
     $ssh_host,
     $ssh_user   = 'localadmin',
     $ssh_port   = '8022',
-    $sudo       = 'yes',
     $vg,
     $lv,
     $when       = ''

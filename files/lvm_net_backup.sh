@@ -238,6 +238,10 @@ if [ ! -d "$DEST" ] ; then
   fail "Can't find destination directory ${DEST} !"
 fi
 
+if [ "x$USER" != "xroot" ] ; then
+  SUDO="sudo "
+fi
+
 ## SSH connection
 exec_cmd $DRY_RUN $SSH true
 if [ "x$?" != "x0" ] ; then
@@ -262,7 +266,7 @@ fi
 ############################################
 
 # Create snapshot
-exec_cmd $DRY_RUN $SSH "sudo lvcreate -s -L ${SNAPSHOT_SIZE} -n ${LV}-backupsnap /dev/${VG}/${LV}"
+exec_cmd $DRY_RUN $SSH "${SUDO}lvcreate -s -L ${SNAPSHOT_SIZE} -n ${LV}-backupsnap /dev/${VG}/${LV}"
 if [ "x$?" != "x0" ] ; then
   error "Can't create snapshot ${LV}-backupsnap !"
   ERR=1
@@ -277,11 +281,11 @@ fi
 if [ "x$ERR"  == "x1" ] ; then
   error "Can't backup !"
 elif [ "x$DRY_RUN" == "xDRY_RUN" ] ; then
-    report "[DRY-RUN] $SSH sudo dd if=/dev/${VG}/${LV}-backupsnapsnap | gzip > ${DEST_BACKUP_DIR}${DEST_BACKUP_FILE}"
+    report "[DRY-RUN] $SSH ${SUDO}dd if=/dev/${VG}/${LV}-backupsnapsnap | gzip > ${DEST_BACKUP_DIR}${DEST_BACKUP_FILE}"
 else
     exec_cmd $DRY_RUN mkdir -p $DEST_BACKUP_DIR
-    report "[CMD] $SSH sudo dd if=/dev/${VG}/${LV}-backupsnap  | gzip  > ${DEST_BACKUP_DIR}${DEST_BACKUP_FILE}"
-                  $SSH "sudo dd if=/dev/${VG}/${LV}-backupsnap | gzip" > ${DEST_BACKUP_DIR}${DEST_BACKUP_FILE}
+    report "[CMD] $SSH ${SUDO}dd if=/dev/${VG}/${LV}-backupsnap  | gzip  > ${DEST_BACKUP_DIR}${DEST_BACKUP_FILE}"
+                  $SSH "${SUDO}dd if=/dev/${VG}/${LV}-backupsnap | gzip" > ${DEST_BACKUP_DIR}${DEST_BACKUP_FILE}
 
     if [ "x$?" != "x0" ] ; then
       error "Can't retrieve ${LV}-backupsnap into ${DEST_BACKUP_DIR}${DEST_BACKUP_FILE} !"
@@ -296,7 +300,7 @@ fi
 ###################################
 
 # Delete snapshot
-exec_cmd $DRY_RUN $SSH "sudo lvremove -f /dev/${VG}/${LV}-backupsnap"
+exec_cmd $DRY_RUN $SSH "${SUDO}lvremove -f /dev/${VG}/${LV}-backupsnap"
 if [ "x$?" != "x0" ] ; then
   fail "Can't remove snapshot ${LV}-backupsnap !"
   ERR=1

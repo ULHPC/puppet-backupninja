@@ -8,7 +8,6 @@ getconf backupdir /var/backups/dom0
 getconf ssh_host
 getconf ssh_user
 getconf ssh_port
-getconf sudo yes
 getconf vg
 getconf lv
 
@@ -34,10 +33,6 @@ fi
 
 if [ -z "$lv" ] ; then
    fatal "lv parameter is mandatory"
-fi
-
-if [ $sudo != "yes" ] && [ $sudo != "no" ] ; then
-   fatal "sudo parameter must be set to either 'yes' or 'no'"
 fi
 
 for vol in $lv; do
