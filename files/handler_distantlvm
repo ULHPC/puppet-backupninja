@@ -10,6 +10,7 @@ getconf ssh_user
 getconf ssh_port
 getconf vg
 getconf lv
+getconf keep 0
 
 if [ ! -d $backupdir ] ; then
    info "Creating $backupdir"
@@ -36,7 +37,7 @@ if [ -z "$lv" ] ; then
 fi
 
 for vol in $lv; do
-  execstr="/usr/local/bin/lvm_net_backup.sh -f --dest $backupdir --ssh $ssh_user@$ssh_host --ssh_port $ssh_port --vg $vg --lv $vol"
+  execstr="/usr/local/bin/lvm_net_backup.sh -f --dest $backupdir --ssh $ssh_host --ssh_port $ssh_port --ssh_user $ssh_user --vg $vg --lv $vol --keep $keep"
   debug "$execstr"
   if [ ! $test ]; then
      output=`eval $execstr 2>&1`

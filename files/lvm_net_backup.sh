@@ -26,12 +26,12 @@ print_usage()
 
 NAME
         lvm_net_backup.sh - Backup lvm snapshot over SSH to files
-        Version 0.1
+        Version 0.2
 
 SYNOPSIS
         lvm_net_backup.sh --dest <dest. dir> --ssh <host>
                           --vg <LVM Volume Group> --lv <LVM Logical Volume>
-                          [--rotation current|day|month|year|disabled]
+                          [--keep 0|1|n]
                           [--ssh_config <configfile>] [--dry-run] [-f]
 
 DESCRIPTION
@@ -49,6 +49,9 @@ ARGUMENTS
         --ssh_port <port>
                 Port of the ssh server
 
+        --ssh_user <user>
+                Specifies the user to log in as on the remote machine
+
         --vg <LVM Volume Group>
                 Distant LVM Volume Group on the <host> server
 
@@ -58,16 +61,12 @@ ARGUMENTS
 
 
 OPTIONS
-        --rotation <current|day|month|year|disabled>
-              /!\ NOT IMPLEMENTED YET /!\
-                Specify your rotation time period.
-                'current'  only keep the last backup (1)
-                'day'      keep the last day, month and year backup (4)
-                'month'    keep the last month and last year backup (3)
-                'year'     keep the last year backup (2)
-                'disabled' keep all the backups
-
-                Default is 'current'
+        --keep <number of days>
+                Specify the number of backups you want to keep.
+                '0'        Do not delete, keep all the backups
+                '1'        Keep the last backup
+                'n'        Keep the n'th last backups
+                Default is '0'
 
         --dry-run
                 Test mode, does nothing, print commands
@@ -79,14 +78,14 @@ OPTIONS
 EXAMPLES
         lvm_net_backup.sh --dest /data --ssh shiva \\
                           --vg vg_shiva_domU --lv hpc-disk \\
-                          --rotation day
+                          --keep 10
 
         When this command is launched, it checks if an action must be done
         (depending on existing backup), and apply the rotation policy (delete
         old backups)
         This will produce a snapshot of host=shiva/vg=vg_shiva_domU/lv=hpc-disk
         in the directory /data on the local host. The file will be written at
-        the following paths :  host/vg/lv/year/month/day/host-vg-lv-ymd.tgz
+        the following paths : host/vg/lv/year/month/day/host-vg-lv-ymd.tgz
         Additionally, the xen-tools logs and the xen configuration file of the
         domU will be saved in the same directory.
 
@@ -141,8 +140,9 @@ fail() {
 ######################################
 
 # Defaults
-SSH_PORT=22
-ROTATION=current
+PORT=22
+USER=root
+KEEP=0
 DRY_RUN=
 FORCE=
 
@@ -160,10 +160,11 @@ do
   case $args in
     --dest)       DEST=${args[index]}       ;;
     --ssh)        HOST=${args[index]}       ;;
+    --ssh_user)   USER=${args[index]}       ;;
     --ssh_port)   PORT=${args[index]}       ;;
-    --vg)         VG=${args[index]}         ;;
-    --lv)         LV=${args[index]}         ;;
-    --rotation)   ROTATION=${args[index]}   ;;
+    --vg)           VG=${args[index]}       ;;
+    --lv)           LV=${args[index]}       ;;
+    --keep)       KEEP=${args[index]}       ;;
     --dry-run)    DRY_RUN="DRY_RUN"         ;;
     -f)           FORCE=-f                  ;;
   esac
@@ -178,10 +179,10 @@ fail="err [FAIL] "
 YEAR=$(date +%Y)
 MONTH=$(date +%m)
 DAY=$(date +%d)
-DEST_BACKUP_DIR=${DEST}
+DEST_BACKUP_DIR=${DEST}/
 DEST_BACKUP_FILE=${HOST}_${VG}_${LV}_${YEAR}_${MONTH}_${DAY}.dd.gz
 
-SSH="ssh -p $PORT $HOST -o StrictHostKeyChecking=no"
+SSH="ssh -p ${PORT} ${USER}@${HOST} -o StrictHostKeyChecking=no"
 
 # Checks
 if [ "x$DEST" == "x" ] ; then
@@ -210,9 +211,10 @@ fi
 report "--dest       = ${DEST}"
 report "--ssh        = ${HOST}"
 report "--ssh_port   = ${PORT}"
+report "--ssh_user   = ${USER}"
 report "--vg         = ${VG}"
 report "--lv         = ${LV}"
-report "--rotation   = ${ROTATION}"
+report "--keep       = ${KEEP}"
 report "FORCE=${FORCE} DRY_RUN=${DRY_RUN}"
 
 
@@ -311,11 +313,24 @@ fi
 ############# Rotation work #############
 #########################################
 
-#
-# NOT
-#     IMPLEMENTED
-#                 YET
-#
+if [ "$KEEP" != "0" ] ; then
+
+  nbrfiles=`/bin/ls -c1 ${DEST_BACKUP_DIR}${HOST}_${VG}_${LV}* 2>/dev/null | wc -l`
+  let "nbroldbackups = $nbrfiles - $KEEP"
+
+  if [ $nbroldbackups -gt 0 ] ; then
+
+    for i in `/bin/ls -c1 ${DEST_BACKUP_DIR}${HOST}_${VG}_${LV}* 2>/dev/null | sort | head -n $nbroldbackups` ; do
+      exec_cmd $DRY_RUN "rm $i"
+      if [ "x$?" != "x0" ] ; then
+        error "Can't delete file $i !"
+        ERR=1
+      fi
+    done
+
+  fi
+
+fi
 
 exit $ERR
 

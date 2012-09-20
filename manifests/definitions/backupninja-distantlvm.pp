@@ -43,7 +43,8 @@ define backupninja::distantlvm(
     $ssh_port   = '8022',
     $vg,
     $lv,
-    $when       = ''
+    $when       = '',
+    $keep       = '0'
 )
 {
     include backupninja::params
@@ -60,7 +61,7 @@ define backupninja::distantlvm(
             fail("Cannot configure a backupninja '${basename}' as backupninja::ensure is NOT set to present (but ${backupninja::ensure})")
         }
     }
-    
+
     if (! defined( File['/usr/share/backupninja/distantlvm']) ) {
         file { "/usr/share/backupninja/distantlvm":
             path    => "/usr/share/backupninja/distantlvm",
