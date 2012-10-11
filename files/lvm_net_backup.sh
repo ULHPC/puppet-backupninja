@@ -65,7 +65,7 @@ OPTIONS
                 Specify the number of backups you want to keep.
                 '0'        Do not delete, keep all the backups
                 '1'        Keep the last backup
-                'n'        Keep the n'th last backups
+                'n'        Keep the n last backups
                 Default is '0'
 
         --dry-run
@@ -315,12 +315,12 @@ fi
 
 if [ "$KEEP" != "0" ] ; then
 
-  nbrfiles=`/bin/ls -c1 ${DEST_BACKUP_DIR}${HOST}_${VG}_${LV}* 2>/dev/null | wc -l`
+  nbrfiles=`/bin/ls -c1 ${DEST_BACKUP_DIR}${HOST}_${VG}_${LV}_* 2>/dev/null | wc -l`
   let "nbroldbackups = $nbrfiles - $KEEP"
 
   if [ $nbroldbackups -gt 0 ] ; then
 
-    for i in `/bin/ls -c1 ${DEST_BACKUP_DIR}${HOST}_${VG}_${LV}* 2>/dev/null | sort | head -n $nbroldbackups` ; do
+    for i in `/bin/ls -c1 ${DEST_BACKUP_DIR}${HOST}_${VG}_${LV}_* 2>/dev/null | sort | head -n $nbroldbackups` ; do
       exec_cmd $DRY_RUN "rm $i"
       if [ "x$?" != "x0" ] ; then
         error "Can't delete file $i !"
