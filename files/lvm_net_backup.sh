@@ -182,7 +182,7 @@ DAY=$(date +%d)
 DEST_BACKUP_DIR=${DEST}/
 DEST_BACKUP_FILE=${HOST}_${VG}_${LV}_${YEAR}_${MONTH}_${DAY}.dd.gz
 
-SSH="ssh -p ${PORT} ${USER}@${HOST} -o StrictHostKeyChecking=no"
+SSH="ssh -c arcfour -p ${PORT} ${USER}@${HOST} -o StrictHostKeyChecking=no"
 
 # Checks
 if [ "x$DEST" == "x" ] ; then
