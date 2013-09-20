@@ -1,5 +1,5 @@
 name    'backupninja'
-version '0.1.0'
+version '0.1.1'
 source  'git-admin.uni.lu:puppet-repo.git'
 author  'Hyacinthe Cartiaux (hyacinthe.cartiaux@uni.lu)'
 license 'GPLv3'
