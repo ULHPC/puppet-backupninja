@@ -10,7 +10,7 @@
 #
 # == Parameters:
 #
-# $ensure:: *Default*: 'present'.
+# $ensure:: *Default*: 'present'. 
 # Ensure the presence (or absence) of backupninja
 #
 # $log_level:: *Default*: '4'.
@@ -31,14 +31,14 @@
 # $reportspace:: *Default*: 'yes'.
 # If set to 'yes', disk space usage will be included in the backup email report
 #
-# $reporthost:: *Default*: empty.
+# $reporthost:: *Default*: empty. 
 # Where to rsync the backupninja.log to be aggregated in a ninjareport
 #
-# $reportuser:: *Default*: 'ninja'.
+# $reportuser:: *Default*: 'ninja'. 
 # What user to connect to reporthost to sync the backupninja.log
 #
-# $reportdirectory:: *Default*: '/var/lib/backupninja/reports'. Where on the
-# reporthost should the report go. NOTE: the name of the log will be used in
+# $reportdirectory:: *Default*: '/var/lib/backupninja/reports'. Where on the 
+# reporthost should the report go. NOTE: the name of the log will be used in 
 # the report, use a globally unique name, preferably the hostname
 #
 # $admingroup:: *Default*: 'root'. Set to the administration group that is
@@ -46,10 +46,10 @@
 #
 # $logfile:: *Default*: '/var/log/backupninja.log'. Where to log
 #
-# $configdirectory:: *Default*: '/etc/backup.d'.
+# $configdirectory:: *Default*: '/etc/backup.d'. 
 # Directory where all the backup configuration files live
 #
-# $scriptdirectory:: *Default*: '/usr/share/backupninja'.
+# $scriptdirectory:: *Default*: '/usr/share/backupninja'. 
 # Where backupninja helper scripts are found
 #
 # $libdirectory:: *Default*: '/usr/lib/backupninja'.
@@ -93,7 +93,7 @@
 #
 class backupninja(
     $ensure          = $backupninja::params::ensure,
-    $log_level       = $backupninja::params::loglevel,
+    $log_level       = $backupninja::params::loglevel, 
     $reportemail     = $backupninja::params::reportemail,
     $reportsuccess   = $backupninja::params::reportsuccess,
     $reportinfo      = $backupninja::params::reportinfo,
@@ -165,16 +165,7 @@ class backupninja::common {
 # = Class: backupninja::debian
 #
 # Specialization class for Debian systems
-class backupninja::debian inherits backupninja::common {
-   file { "/usr/share/backupninja/rsync":
-       owner   => "${backupninja::params::configfile_owner}",
-       group   => "${backupninja::params::configfile_group}",
-       mode    => "${backupninja::params::taskfile_mode}",
-       ensure  => "${ensure}",
-       source => 'puppet:///modules/backupninja/handler_rsync_118d7587',
-       require => Package['backupninja']
-   }
-}
+class backupninja::debian inherits backupninja::common { }
 
 # ------------------------------------------------------------------------------
 # = Class: backupninja::redhat
