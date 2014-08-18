@@ -48,10 +48,15 @@ class backupninja::params {
     $logfile         = "/var/log/backupninja.log"
     $configdirectory = "/etc/backup.d"
     $scriptdirectory = "/usr/share/backupninja"
-    $libdirectory    = "/usr/lib/backupninja"
     $usecolors       = "yes"
     $when            = "everyday at 01:00"
     $vservers        = "no"
+
+    $libdirectory    = $::operatingsystem ? {
+        /(?i-mx:centos|fedora|redhat)/ => '/usr/libexec/backupninja',
+        /(?i-mx:debian|ubuntu)/        => '/usr/lib/backupninja',
+        default                        => '/usr/lib/backupninja'
+    }
 
     #### MODULE INTERNAL VARIABLES  #########
     # (Modify to adapt to unsupported OSes)
