@@ -291,6 +291,7 @@ else
 
     if [ "x$?" != "x0" ] ; then
       error "Can't retrieve ${LV}-backupsnap into ${DEST_BACKUP_DIR}${DEST_BACKUP_FILE} !"
+      exec_cmd $DRY_RUN rm -f ${DEST_BACKUP_DIR}${DEST_BACKUP_FILE}
       ERR=1
     fi
 
@@ -313,7 +314,7 @@ fi
 ############# Rotation work #############
 #########################################
 
-if [ "$KEEP" != "0" ] ; then
+if [[ "$KEEP" != "0" && "x$ERR" == "x0" ]] ; then
 
   nbrfiles=`/bin/ls -c1 ${DEST_BACKUP_DIR}${HOST}_${VG}_${LV}_* 2>/dev/null | wc -l`
   let "nbroldbackups = $nbrfiles - $KEEP"
@@ -330,6 +331,8 @@ if [ "$KEEP" != "0" ] ; then
 
   fi
 
+elif [[ "$KEEP" != "0" && "x$ERR" == "x1" ]]; then
+    error "Error(s) detected, no backup removed !"
 fi
 
 exit $ERR
