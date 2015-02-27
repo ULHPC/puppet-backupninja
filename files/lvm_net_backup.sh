@@ -146,8 +146,6 @@ KEEP=0
 DRY_RUN=
 FORCE=
 
-SERVER_MOUNT_POINT=/mnt/backup
-
 SNAPSHOT_SIZE="1G"
 
 # Parsing
@@ -156,7 +154,7 @@ args=($opts)
 index=0
 for args in $opts
 do
-  index=`expr $index + 1`
+  index=$((index + 1))
   case $args in
     --dest)       DEST=${args[index]}       ;;
     --ssh)        HOST=${args[index]}       ;;
@@ -172,9 +170,6 @@ done
 
 # variables
 ERR=0
-err="error "
-info="report [INFO] "
-fail="err [FAIL] "
 
 YEAR=$(date +%Y)
 MONTH=$(date +%m)
