@@ -24,7 +24,7 @@
 #
 # You can then add a mydef specification as follows:
 #
-#    backupninja::distantlvm { "backup_dom0_${name}":
+#    backupninja::distantlvm { 'backup_dom0_test':
 #        ensure     => 'present',
 #        backupdir  => '/data/backup_dom0',
 #        ssh_host   => 'dom0-server.uni.lu',
