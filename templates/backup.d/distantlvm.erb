@@ -9,26 +9,26 @@ when = <%= scope.lookupvar('when') %>
 
 # backupdir = <dir> (default: /var/backups/postgres)
 # where to dump the backups
-backupdir = <%= backupdir %>
+backupdir = <%= @backupdir %>
 
 ## Server information, which hosts the logical volume to backup
 # ssh_host
-ssh_host = <%= ssh_host %>
+ssh_host = <%= @ssh_host %>
 
 # ssh_user
-ssh_user = <%= ssh_user %>
+ssh_user = <%= @ssh_user %>
 
 # ssh_port
-ssh_port = <%= ssh_port %>
+ssh_port = <%= @ssh_port %>
 
 # vg: LVM Volume Group
 # Volume Group to which belongs the logical volume to backup
-vg = <%= vg %>
+vg = <%= @vg %>
 
 # lv = < lv1 lv2 lv3... >
 # List of logical volume to backup
-lv = <%= lv %>
+lv = <%= @lv %>
 
 # How many backups should we keep? 0 means all
-keep = <%= keep %>
+keep = <%= @keep %>
 
