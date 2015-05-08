@@ -1,4 +1,4 @@
--*- mode: markdown; mode: auto-fill; fill-column: 80 -*-
+-*- mode: markdown; mode: visual-line;  -*-
 
 # Backupninja Puppet Module 
 
@@ -15,20 +15,29 @@ Install and configure backupninja
 
 ## Synopsis
 
-Install and configure backupninja
+Install and configure backupninja.
+
 This module implements the following elements: 
 
-* __classes__:
-  * `backupninja`
-* __definitions__: 
-  * `backupninja::ldap`: dump an openldap directory to the local disk
-  * `backupninja::distantlvm`: retrieve remote lvm disk (using snapshots)
-  * `backupninja::mysql`: dump the mysql databases to the local disk
-  * `backupninja::pgsql`: dump the postgresql databases to the local disk
-  * `backupninja::rsync`: configure rsync backups
- 
-The various operations of this repository are piloted from a `Rakefile` which
-assumes that you have [RVM](https://rvm.io/) installed on your system.
+* __Puppet classes__:
+    - `backupninja` 
+    - `backupninja::common` 
+    - `backupninja::debian` 
+    - `backupninja::params` 
+    - `backupninja::redhat` 
+
+* __Puppet definitions__: 
+    - `backupninja::distantlvm` 
+    - `backupninja::ldap` 
+    - `backupninja::mysql` 
+    - `backupninja::pgsql` 
+    - `backupninja::rsync` 
+
+All these components are configured through a set of variables you will find in
+[`manifests/params.pp`](manifests/params.pp). 
+
+_Note_: the various operations that can be conducted from this repository are piloted from a [`Rakefile`](https://github.com/ruby/rake) and assumes you have a running [Ruby](https://www.ruby-lang.org/en/) installation.
+See [`doc/contributing.md`](doc/contributing.md) for more details on the steps you shall follow to have this `Rakefile` working properly. 
 
 ## Dependencies
 
@@ -36,17 +45,38 @@ See [`metadata.json`](metadata.json). In particular, this module depends on
 
 * [puppetlabs/stdlib](https://forge.puppetlabs.com/puppetlabs/stdlib)
 
-## General Parameters
-
-See [manifests/params.pp](manifests/params.pp).
-
 ## Overview and Usage
 
-### class `backupninja`
+### Class `backupninja`
 
-     include 'backupninja'
+This is the main class defined in this module.
+It accepts the following parameters: 
 
-### definition `backupninja::distantlvm`
+* `$ensure`: default to 'present', can be 'absent'
+
+Use is as follows:
+
+     include ' backupninja'
+
+See also [`tests/init.pp`](tests/init.pp)
+
+### Class `backupninja`
+
+See `tests/backupninja.pp`
+### Class `backupninja::common`
+
+See `tests/backupninja/common.pp`
+### Class `backupninja::debian`
+
+See `tests/backupninja/debian.pp`
+### Class `backupninja::params`
+
+See `tests/backupninja/params.pp`
+### Class `backupninja::redhat`
+
+See `tests/backupninja/redhat.pp`
+
+### Definition `backupninja::distantlvm`
 
 The definition `backupninja::distantlvm` provides a way to configure our own `distantlvm`
 backup action. It creates lvm logical volume snapshot, and retrieves them via ssh. 
@@ -81,7 +111,7 @@ Example:
     }
 
 
-### definition `backupninja::ldap`, `backupninja::rsync`, `backupninja::pgsql`, `backupninja::mysql`
+### Definitions `backupninja::ldap`, `backupninja::rsync`, `backupninja::pgsql`, `backupninja::mysql`
 
 These definitions implements the standard handlers provided by backupninja.
 All the parameters are derived from the handlers and are documented [online](https://labs.riseup.net/code/projects/backupninja)
@@ -89,8 +119,7 @@ All the parameters are derived from the handlers and are documented [online](htt
 
 ## Librarian-Puppet / R10K Setup
 
-You can of course configure ULHPC-sudo in your `Puppetfile` to make it 
-available with [Librarian puppet](http://librarian-puppet.com/) or
+You can of course configure the backupninja module in your `Puppetfile` to make it available with [Librarian puppet](http://librarian-puppet.com/) or
 [r10k](https://github.com/adrienthebo/r10k) by adding the following entry:
 
      # Modules from the Puppet Forge
@@ -104,60 +133,20 @@ or, if you prefer to work on the git version:
 
 ## Issues / Feature request
 
-You can submit bug / issues / feature request using the 
-[ulhpc-backupninja Puppet Module Tracker](https://github.com/ULHPC/puppet-backupninja/issues). 
-
+You can submit bug / issues / feature request using the [ulhpc-backupninja Puppet Module Tracker](https://github.com/ULHPC/puppet-backupninja/issues). 
 
 ## Developments / Contributing to the code 
 
-If you want to contribute to the code, you shall be aware of the way this module
-is organized.
+If you want to contribute to the code, you shall be aware of the way this module is organized. 
 These elements are detailed on [`doc/contributing.md`](doc/contributing.md)
 
-You are more than welcome to contribute to its development by 
-[sending a pull request](https://help.github.com/articles/using-pull-requests). 
+You are more than welcome to contribute to its development by [sending a pull request](https://help.github.com/articles/using-pull-requests). 
 
-## Tests on Vagrant box
+## Puppet modules tests within a Vagrant box
 
-The best way to test this module in a non-intrusive way is to rely on
-[Vagrant](http://www.vagrantup.com/). The `Vagrantfile` at the root of the
-repository pilot the provisioning of the vagrant box and relies on boxes
-generated through my [vagrant-vms](https://github.com/falkor/vagrant-vms)
-repository.  
-Once cloned, run 
+The best way to test this module in a non-intrusive way is to rely on [Vagrant](http://www.vagrantup.com/).
+The `Vagrantfile` at the root of the repository pilot the provisioning various vagrant boxes available on [Vagrant cloud](https://atlas.hashicorp.com/boxes/search?utf8=%E2%9C%93&sort=&provider=virtualbox&q=svarrette) you can use to test this module.
 
-      $> rake packer:Debian:init
-      
-To create a template. Select the version matching the once mentioned on the
-`Vagrantfile` (`7.6.0-amd64` for instance)
-Then run 
+See [`doc/vagrant.md`](doc/vagrant.md) for more details. 
 
-      $> rake packer:Debian:build
-      
-This shall generate the vagrant box `debian-7.6.0-amd64.box` that you can then
-add to your box lists: 
-
-      $> vagrant box add debian-7.6.0-amd64  packer/debian-7.6.0-amd64/debian-7.6.0-amd64.box
-
-Now you can run `vagrant up` from this repository to boot the VM, provision it
-to be ready to test this module (see the [`.vagrant_init.rb`](.vagrant_init.rb)
-script). For instance, you can test the manifests of the `tests/` directory
-within the VM: 
-
-      $> vagrant ssh 
-      [...]
-      (vagrant)$> sudo puppet apply -t /vagrant/tests/init.pp
-      
-Run `vagrant halt` (or `vagrant destroy`) to stop (or kill) the VM once you've
-finished to play with it. 
-
-## Resources
-
-### Git 
-
-You should become familiar (if not yet) with Git. Consider these resources: 
-
-* [Git book](http://book.git-scm.com/index.html)
-* [Github:help](http://help.github.com/mac-set-up-git/)
-* [Git reference](http://gitref.org/)
 
