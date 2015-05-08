@@ -83,7 +83,7 @@ Example:
 
 ### definition `backupninja::ldap`, `backupninja::rsync`, `backupninja::pgsql`, `backupninja::mysql`
 
-These definitions implements the standard handler provided by backupninja.
+These definitions implements the standard handlers provided by backupninja.
 All the parameters are derived from the handlers and are documented [online](https://labs.riseup.net/code/projects/backupninja)
 
 
