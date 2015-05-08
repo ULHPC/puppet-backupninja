@@ -24,7 +24,7 @@ This module implements the following elements:
   * `backupninja::ldap`: dump an openldap directory to the local disk
   * `backupninja::distantlvm`: retrieve remote lvm disk (using snapshots)
   * `backupninja::mysql`: dump the mysql databases to the local disk
-  * `backupninja::postgresql`: dump the postgresql databases to the local disk
+  * `backupninja::pgsql`: dump the postgresql databases to the local disk
   * `backupninja::rsync`: configure rsync backups
  
 The various operations of this repository are piloted from a `Rakefile` which
@@ -81,7 +81,7 @@ Example:
     }
 
 
-### definition `backupninja::ldap`, `backupninja::rsync`, `backupninja::postgresql`, `backupninja::mysql`
+### definition `backupninja::ldap`, `backupninja::rsync`, `backupninja::pgsql`, `backupninja::mysql`
 
 These definitions implements the standard handler provided by backupninja.
 All the parameters are derived from the handlers and are documented [online](https://labs.riseup.net/code/projects/backupninja)
