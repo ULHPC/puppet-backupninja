@@ -22,9 +22,9 @@ This module implements the following elements:
 * __Puppet classes__:
     - `backupninja` 
     - `backupninja::common` 
-    - `backupninja::debian` 
+    - `backupninja::common::debian` 
+    - `backupninja::common::redhat` 
     - `backupninja::params` 
-    - `backupninja::redhat` 
 
 * __Puppet definitions__: 
     - `backupninja::distantlvm` 
