@@ -15,7 +15,7 @@
 
 include 'backupninja::params'
 
-$names = ["ensure", "loglevel", "reportemail", "reportsuccess", "reportinfo", "reportwarning", "reportspace", "reporthost", "reportuser", "reportdirectory", "admingroup", "logfile", "configdirectory", "scriptdirectory", "usecolors", "when", "vservers", "libdirectory", "packagename", "configfile", "configfile_mode", "taskfile_mode", "lvmnetbackup_mode", "configfile_owner", "configfile_group"]
+$names = ['ensure', 'loglevel', 'reportemail', 'reportsuccess', 'reportinfo', 'reportwarning', 'reportspace', 'reporthost', 'reportuser', 'reportdirectory', 'admingroup', 'logfile', 'configdirectory', 'scriptdirectory', 'usecolors', 'when', 'vservers', 'libdirectory', 'packagename', 'configfile', 'configfile_mode', 'taskfile_mode', 'lvmnetbackup_mode', 'configfile_owner', 'configfile_group']
 
 notice("backupninja::params::ensure = ${backupninja::params::ensure}")
 notice("backupninja::params::loglevel = ${backupninja::params::loglevel}")
