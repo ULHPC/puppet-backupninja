@@ -30,8 +30,4 @@ class backupninja::common {
         require => Package['backupninja']
     }
 
-    if $backupninja::ensure == 'absent' {
-      # Here $backupninja::ensure is 'absent'
-    }
-
 }
