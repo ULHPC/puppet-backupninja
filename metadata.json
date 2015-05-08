@@ -1,6 +1,6 @@
 {
   "name": "ULHPC-backupninja",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": "UL HPC Management Team",
   "mail": "hpc-sysadmins@uni.lu",
   "summary": "Install and configure backupninja",
