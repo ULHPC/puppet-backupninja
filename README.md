@@ -4,7 +4,7 @@
 
 [![Puppet Forge](http://img.shields.io/puppetforge/v/ulhpc/backupninja.svg)](https://forge.puppetlabs.com/ULHPC/backupninja)
 [![License](http://img.shields.io/:license-GPL3.0-blue.svg)](LICENSE)
-![Supported Platforms](http://img.shields.io/badge/platform-debian-lightgrey.svg)
+![Supported Platforms](http://img.shields.io/badge/platform-debian|centos-lightgrey.svg)
 
 Install and configure backupninja
 
