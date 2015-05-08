@@ -60,27 +60,27 @@ Use is as follows:
 
 See also [`tests/init.pp`](tests/init.pp)
 
-### Class `backupninja`
-
-See `tests/backupninja.pp`
 ### Class `backupninja::common`
 
-See `tests/backupninja/common.pp`
-### Class `backupninja::debian`
+See [`tests/common.pp`](tests/common.pp)
 
-See `tests/backupninja/debian.pp`
+### Class `backupninja::common::debian`
+
+See [`tests/common/debian.pp`](tests/common/debian.pp)
+
+### Class `backupninja::common::redhat`
+
+See [`tests/common/redhat.pp`](tests/common/redhat.pp)
+
 ### Class `backupninja::params`
 
-See `tests/backupninja/params.pp`
-### Class `backupninja::redhat`
-
-See `tests/backupninja/redhat.pp`
+See [`tests/params.pp`](tests/params.pp)
 
 ### Definition `backupninja::distantlvm`
 
 The definition `backupninja::distantlvm` provides a way to configure our own `distantlvm`
-backup action. It creates lvm logical volume snapshot, and retrieves them via ssh. 
-It is of your responsability to set-up sudo and authorize ssh connections from 
+backup action. It creates LVM logical volume snapshot, and retrieves them via ssh. 
+It is of your responsibility to set-up sudo and authorize ssh connections from 
 the backup server to the remote server. 
 
 This definition accepts the following parameters:
