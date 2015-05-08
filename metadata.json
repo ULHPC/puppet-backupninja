@@ -23,7 +23,13 @@
         "6",
         "7"
       ]
+    },
+    {
+      "operatingsystem": "Centos",
+      "operatingsystemrelease": [
+        "6"
+      ]
     }
   ],
-  "tags": ["backupninja backup rsync lvm ldap mysql postgresql snapshot"]
+  "tags": ["backupninja", "backup", "rsync", "lvm", "snapshot", "ldap", "mysql", "postgresql"]
 }
