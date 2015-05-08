@@ -18,9 +18,14 @@ Install and configure backupninja
 Install and configure backupninja
 This module implements the following elements: 
 
-* __classes__:     `backupninja`
+* __classes__:
+  * `backupninja`
 * __definitions__: 
-  * `backupninja::mydef`: 
+  * `backupninja::ldap`: dump an openldap directory to the local disk
+  * `backupninja::distantlvm`: retrieve remote lvm disk (using snapshots)
+  * `backupninja::mysql`: dump the mysql databases to the local disk
+  * `backupninja::postgresql`: dump the postgresql databases to the local disk
+  * `backupninja::rsync`: configure rsync backups
  
 The various operations of this repository are piloted from a `Rakefile` which
 assumes that you have [RVM](https://rvm.io/) installed on your system.
@@ -33,28 +38,54 @@ See [`metadata.json`](metadata.json). In particular, this module depends on
 
 ## General Parameters
 
-See [manifests/params.pp](manifests/params.pp)
+See [manifests/params.pp](manifests/params.pp).
 
 ## Overview and Usage
 
 ### class `backupninja`
 
-     include ' backupninja'
+     include 'backupninja'
 
-### definition `backupninja::mydef`
+### definition `backupninja::distantlvm`
 
-The definition `backupninja::mydef` provides ...
+The definition `backupninja::distantlvm` provides a way to configure our own `distantlvm`
+backup action. It creates lvm logical volume snapshot, and retrieves them via ssh. 
+It is of your responsability to set-up sudo and authorize ssh connections from 
+the backup server to the remote server. 
+
 This definition accepts the following parameters:
 
 * `$ensure`: default to 'present', can be 'absent'
-* `$content`: specify the contents of the directive as a string
-* `$source`: copy a file as the content of the directive.
+* `$vg`: lvm volume group name on the remote server
+* `$lv`: space separated list of logical volumes to be backed up
+* `$backupdir`: backup target directory (local)
+* `$ssh_host`: remote server hostname
+* `$ssh_user`: remote ssh server user
+* `$ssh_port`: remote ssh server port
+* `$when`: execution time, using backupninja format
+* `$keep`: if specified, keep the last $keep backups
 
 Example:
 
-      backupninja::mydef {'entry':
-           content => "entry\n",
-      }
+
+    backupninja::distantlvm { "backup_dom0_${name}":
+        ensure     => 'present',
+        backupdir  => '/data/backup_dom0',
+        ssh_host   => 'dom0-server.uni.lu',
+        ssh_user   => 'localuser',
+        ssh_port   => '22',
+        vg         => vg_domU,
+        lv         => 'domu1-disk domu2-disk domu3-disk',
+        keep       => 5,
+        when       => 'mondays at 03:00'
+    }
+
+
+### definition `backupninja::ldap`, `backupninja::rsync`, `backupninja::postgresql`, `backupninja::mysql`
+
+These definitions implements the standard handler provided by backupninja.
+All the parameters are derived from the handlers and are documented [online](https://labs.riseup.net/code/projects/backupninja)
+
 
 ## Librarian-Puppet / R10K Setup
 
