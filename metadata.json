@@ -1,0 +1,29 @@
+{
+  "name": "ulhpc-backupninja",
+  "version": "0.1.0",
+  "author": "UL HPC Management Team",
+  "mail": "hpc-sysadmins@uni.lu",
+  "summary": "Install and configure backupninja",
+  "description": "Install and configure backupninja",
+  "license": "GPL-3.0",
+  "source": "https://github.com/ULHPC/puppet-backupninja",
+  "project_page": "https://github.com/ULHPC/puppet-backupninja",
+  "issues_url": "https://github.com/ULHPC/puppet-backupninja/issues",
+  "forge_url": "https://forge.puppetlabs.com/ULHPC/backupninja",
+  "dependencies": [
+    {
+      "name": "puppetlabs-stdlib",
+      "version_requirement": ">=4.2.2 <5.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    }
+  ],
+  "tags": ["backupninja backup rsync lvm ldap mysql postgresql snapshot"]
+}
