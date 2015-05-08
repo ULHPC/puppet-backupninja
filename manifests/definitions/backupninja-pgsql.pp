@@ -59,12 +59,12 @@ define backupninja::pgsql(
     }
 
     file { "${basename}.pgsql":
+        ensure  => $ensure,
         path    => "${backupninja::configdirectory}/${basename}.pgsql",
-        owner   => "${backupninja::params::configfile_owner}",
-        group   => "${backupninja::params::configfile_group}",
-        mode    => "${backupninja::params::taskfile_mode}",
-        ensure  => "${ensure}",
-        content => template("backupninja/backup.d/pgsql.erb"),
+        owner   => $backupninja::params::configfile_owner,
+        group   => $backupninja::params::configfile_group,
+        mode    => $backupninja::params::taskfile_mode,
+        content => template('backupninja/backup.d/pgsql.erb'),
         require => Package['backupninja']
     }
 }

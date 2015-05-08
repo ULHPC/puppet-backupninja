@@ -5,7 +5,7 @@
 #
 # ------------------------------------------------------------------------------
 
-import "classes/*.pp"
-import "definitions/*.pp"
+import 'classes/*.pp'
+import 'definitions/*.pp'
 
 

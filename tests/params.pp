@@ -15,7 +15,7 @@
 
 include 'backupninja::params'
 
-$names = ["ensure", "protocol", "port", "packagename"]
+$names = ['ensure', 'protocol', 'port', 'packagename']
 
 notice("backupninja::params::ensure = ${backupninja::params::ensure}")
 notice("backupninja::params::protocol = ${backupninja::params::protocol}")

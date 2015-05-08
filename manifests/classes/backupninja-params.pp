@@ -30,27 +30,27 @@ class backupninja::params {
     ###########################################
 
     # ensure the presence (or absence) of backupninja
-    $ensure = $backupninja_ensure ? {
+    $ensure = $::backupninja_ensure ? {
         ''      => 'present',
-        default => "${backupninja_ensure}"
+        default => $::backupninja_ensure
     }
 
-    $loglevel        = "4"
-    $reportemail     = "root"
-    $reportsuccess   = "no"
-    $reportinfo      = "no"
-    $reportwarning   = "yes"
-    $reportspace     = "yes"
-    $reporthost      = ""
-    $reportuser      = "ninja"
-    $reportdirectory = "/var/lib/backupninja/reports"
-    $admingroup      = "root"
-    $logfile         = "/var/log/backupninja.log"
-    $configdirectory = "/etc/backup.d"
-    $scriptdirectory = "/usr/share/backupninja"
-    $usecolors       = "yes"
-    $when            = "everyday at 01:00"
-    $vservers        = "no"
+    $loglevel        = '4'
+    $reportemail     = 'root'
+    $reportsuccess   = 'no'
+    $reportinfo      = 'no'
+    $reportwarning   = 'yes'
+    $reportspace     = 'yes'
+    $reporthost      = ''
+    $reportuser      = 'ninja'
+    $reportdirectory = '/var/lib/backupninja/reports'
+    $admingroup      = 'root'
+    $logfile         = '/var/log/backupninja.log'
+    $configdirectory = '/etc/backup.d'
+    $scriptdirectory = '/usr/share/backupninja'
+    $usecolors       = 'yes'
+    $when            = 'everyday at 01:00'
+    $vservers        = 'no'
 
     $libdirectory    = $::operatingsystem ? {
         /(?i-mx:centos|fedora|redhat)/ => '/usr/libexec/backupninja',

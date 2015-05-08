@@ -64,8 +64,8 @@ define backupninja::ldap(
         fail("backupninja::ldap 'method' parameter must be set to either 'slapcat' or 'ldapsearch'")
     }
 
-    if ($backupmethod == "ldapsearch" and ($binddn == '' or $ldaphost == '')) {
-        fail("backupninja::ldap 'binddn' and 'ldaphost' parameters must be set if method is 'ldapsearch'") 
+    if ($backupmethod == 'ldapsearch' and ($binddn == '' or $ldaphost == '')) {
+        fail("backupninja::ldap 'binddn' and 'ldaphost' parameters must be set if method is 'ldapsearch'")
     }
 
     if ($backupninja::ensure != $ensure) {
@@ -75,12 +75,12 @@ define backupninja::ldap(
     }
 
     file { "${basename}.ldap":
+        ensure  => $ensure,
         path    => "${backupninja::configdirectory}/${basename}.ldap",
-        owner   => "${backupninja::params::configfile_owner}",
-        group   => "${backupninja::params::configfile_group}",
-        mode    => "${backupninja::params::taskfile_mode}",
-        ensure  => "${ensure}",
-        content => template("backupninja/backup.d/ldap.erb"),
+        owner   => $backupninja::params::configfile_owner,
+        group   => $backupninja::params::configfile_group,
+        mode    => $backupninja::params::taskfile_mode,
+        content => template('backupninja/backup.d/ldap.erb'),
         require => Package['backupninja']
     }
 }

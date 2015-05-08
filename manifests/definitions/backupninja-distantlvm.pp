@@ -36,13 +36,13 @@
 # [Remember: No empty lines between comments and class definition]
 #
 define backupninja::distantlvm(
-    $ensure     = 'present',
-    $backupdir  = '/var/backups/distantlvm',
     $ssh_host,
-    $ssh_user   = 'localadmin',
-    $ssh_port   = '8022',
     $vg,
     $lv,
+    $ensure     = 'present',
+    $backupdir  = '/var/backups/distantlvm',
+    $ssh_user   = 'localadmin',
+    $ssh_port   = '8022',
     $when       = '',
     $keep       = '0'
 )
@@ -63,36 +63,36 @@ define backupninja::distantlvm(
     }
 
     if (! defined( File['/usr/share/backupninja/distantlvm']) ) {
-        file { "/usr/share/backupninja/distantlvm":
-            path    => "/usr/share/backupninja/distantlvm",
-            owner   => "${backupninja::params::configfile_owner}",
-            group   => "${backupninja::params::configfile_group}",
-            mode    => "${backupninja::params::taskfile_mode}",
-            ensure  => "${ensure}",
-            source => "puppet:///modules/backupninja/handler_distantlvm",
+        file { '/usr/share/backupninja/distantlvm':
+            ensure  => $ensure,
+            path    => '/usr/share/backupninja/distantlvm',
+            owner   => $backupninja::params::configfile_owner,
+            group   => $backupninja::params::configfile_group,
+            mode    => $backupninja::params::taskfile_mode,
+            source  => 'puppet:///modules/backupninja/handler_distantlvm',
             require => Package['backupninja']
         }
     }
 
     if (! defined( File['/usr/local/bin/lvm_net_backup.sh'] ) ) {
-        file { "/usr/local/bin/lvm_net_backup.sh":
-            path    => "/usr/local/bin/lvm_net_backup.sh",
-            owner   => "${backupninja::params::configfile_owner}",
-            group   => "${backupninja::params::configfile_group}",
-            mode    => "${backupninja::params::lvmnetbackup_mode}",
-            ensure  => "${ensure}",
-            source => "puppet:///modules/backupninja/lvm_net_backup.sh",
+        file { '/usr/local/bin/lvm_net_backup.sh':
+            ensure  => $ensure,
+            path    => '/usr/local/bin/lvm_net_backup.sh',
+            owner   => $backupninja::params::configfile_owner,
+            group   => $backupninja::params::configfile_group,
+            mode    => $backupninja::params::lvmnetbackup_mode,
+            source  => 'puppet:///modules/backupninja/lvm_net_backup.sh',
             require => Package['backupninja']
         }
     }
 
     file { "${basename}.distantlvm":
+        ensure  => $ensure,
         path    => "${backupninja::configdirectory}/${basename}.distantlvm",
-        owner   => "${backupninja::params::configfile_owner}",
-        group   => "${backupninja::params::configfile_group}",
-        mode    => "${backupninja::params::taskfile_mode}",
-        ensure  => "${ensure}",
-        content => template("backupninja/backup.d/distantlvm.erb"),
+        owner   => $backupninja::params::configfile_owner,
+        group   => $backupninja::params::configfile_group,
+        mode    => $backupninja::params::taskfile_mode,
+        content => template('backupninja/backup.d/distantlvm.erb'),
         require => Package['backupninja']
     }
 }

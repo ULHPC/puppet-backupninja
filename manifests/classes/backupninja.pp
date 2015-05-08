@@ -123,7 +123,7 @@ inherits backupninja::params
         debian, ubuntu:         { include backupninja::debian }
         centos, redhat:         { include backupninja::redhat }
         default: {
-            fail("Module $module_name is not supported on $operatingsystem")
+            fail("Module ${module_name} is not supported on ${::operatingsystem}")
         }
     }
 }
@@ -140,18 +140,18 @@ class backupninja::common {
     require backupninja::params
 
     package { 'backupninja':
-        name    => "${backupninja::params::packagename}",
-        ensure  => "${backupninja::ensure}",
+        ensure => $backupninja::ensure,
+        name   => $backupninja::params::packagename,
     }
 
 
     file { 'backupninja.conf':
-        path    => "${backupninja::params::configfile}",
-        owner   => "${backupninja::params::configfile_owner}",
-        group   => "${backupninja::params::configfile_group}",
-        mode    => "${backupninja::params::configfile_mode}",
-        ensure  => "${backupninja::ensure}",
-        content => template("backupninja/backupninja.conf.erb"),
+        ensure  => $backupninja::ensure,
+        path    => $backupninja::params::configfile,
+        owner   => $backupninja::params::configfile_owner,
+        group   => $backupninja::params::configfile_group,
+        mode    => $backupninja::params::configfile_mode,
+        content => template('backupninja/backupninja.conf.erb'),
         require => Package['backupninja']
     }
 
@@ -167,14 +167,14 @@ class backupninja::common {
 #
 # Specialization class for Debian systems
 class backupninja::debian inherits backupninja::common {
-   file { "/usr/share/backupninja/rsync":
-       owner   => "${backupninja::params::configfile_owner}",
-       group   => "${backupninja::params::configfile_group}",
-       mode    => "${backupninja::params::taskfile_mode}",
-       ensure  => "${ensure}",
-       source => 'puppet:///modules/backupninja/handler_rsync_118d7587',
-       require => Package['backupninja']
-   }
+    file { '/usr/share/backupninja/rsync':
+        ensure  => $ensure,
+        owner   => $backupninja::params::configfile_owner,
+        group   => $backupninja::params::configfile_group,
+        mode    => $backupninja::params::taskfile_mode,
+        source  => 'puppet:///modules/backupninja/handler_rsync_118d7587',
+        require => Package['backupninja']
+    }
 }
 
 # ------------------------------------------------------------------------------

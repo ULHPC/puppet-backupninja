@@ -103,11 +103,11 @@ define backupninja::rsync(
     }
 
     file { "${mountpoint}/${backupdir}":
+        ensure  => 'directory',
         path    => "${mountpoint}/${backupdir}",
-        owner   => "${backupninja::params::configfile_owner}",
-        group   => "${backupninja::params::configfile_group}",
-        mode    => "${backupninja::params::taskfile_mode}",
-        ensure  => "directory",
+        owner   => $backupninja::params::configfile_owner,
+        group   => $backupninja::params::configfile_group,
+        mode    => $backupninja::params::taskfile_mode,
         require => Exec["mkdir_${mountpoint}/${backupdir}"]
     }
     exec { "mkdir_${mountpoint}/${backupdir}":
@@ -117,12 +117,12 @@ define backupninja::rsync(
     }
 
     file { "${basename}.rsync":
+        ensure  => $ensure,
         path    => "${backupninja::configdirectory}/${basename}.rsync",
-        owner   => "${backupninja::params::configfile_owner}",
-        group   => "${backupninja::params::configfile_group}",
-        mode    => "${backupninja::params::taskfile_mode}",
-        ensure  => "${ensure}",
-        content => template("backupninja/backup.d/rsync.erb"),
+        owner   => $backupninja::params::configfile_owner,
+        group   => $backupninja::params::configfile_group,
+        mode    => $backupninja::params::taskfile_mode,
+        content => template('backupninja/backup.d/rsync.erb'),
         require => Package['backupninja']
     }
 

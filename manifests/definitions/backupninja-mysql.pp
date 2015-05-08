@@ -65,12 +65,12 @@ define backupninja::mysql(
     }
 
     file { "${basename}.mysql":
+        ensure  => $ensure,
         path    => "${backupninja::configdirectory}/${basename}.mysql",
-        owner   => "${backupninja::params::configfile_owner}",
-        group   => "${backupninja::params::configfile_group}",
-        mode    => "${backupninja::params::taskfile_mode}",
-        ensure  => "${ensure}",
-        content => template("backupninja/backup.d/mysql.erb"),
+        owner   => $backupninja::params::configfile_owner,
+        group   => $backupninja::params::configfile_group,
+        mode    => $backupninja::params::taskfile_mode,
+        content => template('backupninja/backup.d/mysql.erb'),
         require => Package['backupninja']
     }
 }
