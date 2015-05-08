@@ -24,7 +24,7 @@
 #
 # You can then add a mydef specification as follows:
 #
-#      backupninja::rsync {
+#      backupninja::rsync { 'backup_rsync_test':
 #         ensure              => 'present',
 #         mountpoint          => '/data/rsync',
 #         backupdir           => 'backed-up-server',
@@ -115,6 +115,9 @@ define backupninja::rsync(
     if ! ($dest_protocol in [ 'rsync', 'ssh' ]) {
         fail("backupninja::rsync 'dest_protocol' parameter must be set to either 'rsync' or 'ssh'")
     }
+
+    $source_include_array = any2array($source_include)
+    $source_exclude_array = any2array($source_exclude)
 
     file { "${mountpoint}/${backupdir}":
         ensure  => 'directory',
