@@ -1,0 +1,53 @@
+# -*- mode: sh; sh-basic-offset: 3; indent-tabs-mode: nil; -*-
+# vim: set filetype=sh sw=3 sts=3 expandtab autoindent:
+#
+# distant LVM handler script for backupninja
+#
+
+getconf backupdir /var/backups/dom0
+getconf ssh_host
+getconf ssh_user
+getconf ssh_port
+getconf vg
+getconf lv
+getconf keep 0
+
+if [ ! -d $backupdir ] ; then
+   info "Creating $backupdir"
+   debug mkdir -p $backupdir
+   if [ ! $test ]; then
+     mkdir -p $backupdir
+   fi
+fi
+
+if [ -z $ssh_host ] ; then
+   fatal "ssh_host parameter is mandatory"
+fi
+
+if [ -z $ssh_user ] ; then
+   fatal "ssh_user parameter is mandatory"
+fi
+
+if [ -z $vg ] ; then
+   fatal "vg parameter is mandatory"
+fi
+
+if [ -z "$lv" ] ; then
+   fatal "lv parameter is mandatory"
+fi
+
+for vol in $lv; do
+  execstr="/usr/local/bin/lvm_net_backup.sh -f --dest $backupdir --ssh $ssh_host --ssh_port $ssh_port --ssh_user $ssh_user --vg $vg --lv $vol --keep $keep"
+  debug "$execstr"
+  if [ ! $test ]; then
+     output=`eval $execstr 2>&1`
+     code=$?
+     if [ "$code" == "0" ]; then
+        debug $output
+        info "Successfully finished dump of $ssh_host:$vg:$vol in $backupdir"
+     else
+        warning $output
+        warning "Failed to save $ssh_host:$vg:$vol in $backupdir"
+     fi
+  fi
+done
