@@ -15,14 +15,14 @@ If you want to contribute to the code, you shall be aware of the way this module
                 `-- init.pp      # Main manifests file which defines the backupninja class 
                 `-- params.pp    # ulhpc-backupninja module variables 
                 `-- backupninja.pp 
-                `-- backupninja/common.pp 
-                `-- backupninja/debian.pp 
-                `-- backupninja/redhat.pp 
-                `-- backupninja/distantlvm.pp 
-                `-- backupninja/ldap.pp 
-                `-- backupninja/mysql.pp 
-                `-- backupninja/pgsql.pp 
-                `-- backupninja/rsync.pp 
+                `-- common.pp 
+                `-- common/debian.pp 
+                `-- common/redhat.pp 
+                `-- distantlvm.pp 
+                `-- ldap.pp 
+                `-- mysql.pp 
+                `-- pgsql.pp 
+                `-- rsync.pp 
            `-- templates/        # Module ERB template files
            `-- tests/            # Contains examples showing how to declare the module’s classes and defined type
            `-- spec/             # Contains rspec tests 

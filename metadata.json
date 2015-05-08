@@ -1,6 +1,6 @@
 {
   "name": "ulhpc-backupninja",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "UL HPC Management Team",
   "mail": "hpc-sysadmins@uni.lu",
   "summary": "Install and configure backupninja",
@@ -44,9 +44,9 @@
   "classes": [
     "backupninja",
     "backupninja::common",
-    "backupninja::debian",
-    "backupninja::params",
-    "backupninja::redhat"
+    "backupninja::common::debian",
+    "backupninja::common::redhat",
+    "backupninja::params"
   ],
   "definitions": [
     "backupninja::distantlvm",
