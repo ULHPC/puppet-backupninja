@@ -1,12 +1,12 @@
-# File::      <tt>backupninja-mysql.pp</tt>
+# File::      <tt>backupninja-ldap.pp</tt>
 # Author::    Hyacinthe Cartiaux (hyacinthe.cartiaux@uni.lu)
 # Copyright:: Copyright (c) 2012 Hyacinthe Cartiaux
 # License::   GPLv3
 #
 # ------------------------------------------------------------------------------
-# = Defines: backupninja::mysql
+# = Defines: backupninja::ldap
 #
-# Configure and manage mysql backup with backupninja
+# Configure and manage OpenLdap / slapd backup with backupninja
 #
 # == Pre-requisites
 #
@@ -24,9 +24,9 @@
 #
 # You can then add a mydef specification as follows:
 #
-#      backupninja::mysql {
-#
-#      }
+#    backupninja::ldap { 'backup_ldap-server':
+#        ensure => present,
+#    }
 #
 # == Warnings
 #
@@ -35,18 +35,20 @@
 #
 # [Remember: No empty lines between comments and class definition]
 #
-define backupninja::mysql(
-    $ensure     = 'present',
-    $databases  = 'all',
-    $backupdir  = '/var/backups/mysql',
-    $hotcopy    = 'no',
-    $sqldump    = 'yes',
-    $compress   = 'yes',
-    $user       = '',
-    $dbusername = '',
-    $dbpassword = '',
-    $configfile = '/etc/mysql/debian.cnf',
-    $when       = ''
+define backupninja::ldap(
+    $ensure       = 'present',
+    $databases    = 'all',
+    $backupdir    = '/var/backups/ldap',
+    $conf         = '/etc/ldap/slapd.conf',
+    $compress     = 'yes',
+    $restart      = 'no',
+    $backupmethod = 'slapcat',
+    $passwordfile = '',
+    $binddn       = 'cn=admin,dc=uni,dc=lu',
+    $ldaphost     = 'localhost',
+    $ssl          = 'no',
+    $tls          = 'yes',
+    $when         = ''
 )
 {
     include backupninja::params
@@ -55,7 +57,15 @@ define backupninja::mysql(
     $basename = $name
 
     if ! ($ensure in [ 'present', 'absent' ]) {
-        fail("backupninja::mysql 'ensure' parameter must be set to either 'absent' or 'present'")
+        fail("backupninja::ldap 'ensure' parameter must be set to either 'absent' or 'present'")
+    }
+
+    if ! ($backupmethod in [ 'slapcat', 'ldapsearch' ]) {
+        fail("backupninja::ldap 'method' parameter must be set to either 'slapcat' or 'ldapsearch'")
+    }
+
+    if ($backupmethod == 'ldapsearch' and ($binddn == '' or $ldaphost == '')) {
+        fail("backupninja::ldap 'binddn' and 'ldaphost' parameters must be set if method is 'ldapsearch'")
     }
 
     if ($backupninja::ensure != $ensure) {
@@ -64,13 +74,13 @@ define backupninja::mysql(
         }
     }
 
-    file { "${basename}.mysql":
+    file { "${basename}.ldap":
         ensure  => $ensure,
-        path    => "${backupninja::configdirectory}/${basename}.mysql",
+        path    => "${backupninja::configdirectory}/${basename}.ldap",
         owner   => $backupninja::params::configfile_owner,
         group   => $backupninja::params::configfile_group,
         mode    => $backupninja::params::taskfile_mode,
-        content => template('backupninja/backup.d/mysql.erb'),
+        content => template('backupninja/backup.d/ldap.erb'),
         require => Package['backupninja']
     }
 }

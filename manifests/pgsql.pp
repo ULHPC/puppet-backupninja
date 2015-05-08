@@ -1,12 +1,12 @@
-# File::      <tt>backupninja-ldap.pp</tt>
+# File::      <tt>backupninja-pgsql.pp</tt>
 # Author::    Hyacinthe Cartiaux (hyacinthe.cartiaux@uni.lu)
 # Copyright:: Copyright (c) 2012 Hyacinthe Cartiaux
 # License::   GPLv3
 #
 # ------------------------------------------------------------------------------
-# = Defines: backupninja::ldap
+# = Defines: backupninja::pgsql
 #
-# Configure and manage OpenLdap / slapd backup with backupninja
+# Configure and manage PostGreSQL backup with backupninja
 #
 # == Pre-requisites
 #
@@ -24,8 +24,8 @@
 #
 # You can then add a mydef specification as follows:
 #
-#      backupninja::ldap {
-#
+#      backupninja::pgsql {
+#          ensure  => 'present',
 #      }
 #
 # == Warnings
@@ -35,19 +35,11 @@
 #
 # [Remember: No empty lines between comments and class definition]
 #
-define backupninja::ldap(
+define backupninja::pgsql(
     $ensure     = 'present',
     $databases  = 'all',
-    $backupdir  = '/var/backups/ldap',
-    $conf       = '/etc/ldap/slapd.conf',
+    $backupdir  = '/var/backups/pgsql',
     $compress   = 'yes',
-    $restart    = 'no',
-    $backupmethod = 'slapcat',
-    $passwordfile = '',
-    $binddn     = 'cn=admin,dc=uni,dc=lu',
-    $ldaphost   = 'localhost',
-    $ssl        = 'no',
-    $tls        = 'yes',
     $when       = ''
 )
 {
@@ -57,15 +49,7 @@ define backupninja::ldap(
     $basename = $name
 
     if ! ($ensure in [ 'present', 'absent' ]) {
-        fail("backupninja::ldap 'ensure' parameter must be set to either 'absent' or 'present'")
-    }
-
-    if ! ($backupmethod in [ 'slapcat', 'ldapsearch' ]) {
-        fail("backupninja::ldap 'method' parameter must be set to either 'slapcat' or 'ldapsearch'")
-    }
-
-    if ($backupmethod == 'ldapsearch' and ($binddn == '' or $ldaphost == '')) {
-        fail("backupninja::ldap 'binddn' and 'ldaphost' parameters must be set if method is 'ldapsearch'")
+        fail("backupninja::pgsql 'ensure' parameter must be set to either 'absent' or 'present'")
     }
 
     if ($backupninja::ensure != $ensure) {
@@ -74,13 +58,13 @@ define backupninja::ldap(
         }
     }
 
-    file { "${basename}.ldap":
+    file { "${basename}.pgsql":
         ensure  => $ensure,
-        path    => "${backupninja::configdirectory}/${basename}.ldap",
+        path    => "${backupninja::configdirectory}/${basename}.pgsql",
         owner   => $backupninja::params::configfile_owner,
         group   => $backupninja::params::configfile_group,
         mode    => $backupninja::params::taskfile_mode,
-        content => template('backupninja/backup.d/ldap.erb'),
+        content => template('backupninja/backup.d/pgsql.erb'),
         require => Package['backupninja']
     }
 }

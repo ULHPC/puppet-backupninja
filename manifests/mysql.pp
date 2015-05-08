@@ -1,12 +1,12 @@
-# File::      <tt>backupninja-pgsql.pp</tt>
+# File::      <tt>backupninja-mysql.pp</tt>
 # Author::    Hyacinthe Cartiaux (hyacinthe.cartiaux@uni.lu)
 # Copyright:: Copyright (c) 2012 Hyacinthe Cartiaux
 # License::   GPLv3
 #
 # ------------------------------------------------------------------------------
-# = Defines: backupninja::pgsql
+# = Defines: backupninja::mysql
 #
-# Configure and manage PostGreSQL backup with backupninja
+# Configure and manage mysql backup with backupninja
 #
 # == Pre-requisites
 #
@@ -24,9 +24,9 @@
 #
 # You can then add a mydef specification as follows:
 #
-#      backupninja::pgsql {
-#
-#      }
+#    backupninja::mysql { 'backup_all_db':
+#        ensure => present,
+#    }
 #
 # == Warnings
 #
@@ -35,11 +35,17 @@
 #
 # [Remember: No empty lines between comments and class definition]
 #
-define backupninja::pgsql(
+define backupninja::mysql(
     $ensure     = 'present',
     $databases  = 'all',
-    $backupdir  = '/var/backups/pgsql',
+    $backupdir  = '/var/backups/mysql',
+    $hotcopy    = 'no',
+    $sqldump    = 'yes',
     $compress   = 'yes',
+    $user       = '',
+    $dbusername = '',
+    $dbpassword = '',
+    $configfile = '/etc/mysql/debian.cnf',
     $when       = ''
 )
 {
@@ -49,7 +55,7 @@ define backupninja::pgsql(
     $basename = $name
 
     if ! ($ensure in [ 'present', 'absent' ]) {
-        fail("backupninja::pgsql 'ensure' parameter must be set to either 'absent' or 'present'")
+        fail("backupninja::mysql 'ensure' parameter must be set to either 'absent' or 'present'")
     }
 
     if ($backupninja::ensure != $ensure) {
@@ -58,13 +64,13 @@ define backupninja::pgsql(
         }
     }
 
-    file { "${basename}.pgsql":
+    file { "${basename}.mysql":
         ensure  => $ensure,
-        path    => "${backupninja::configdirectory}/${basename}.pgsql",
+        path    => "${backupninja::configdirectory}/${basename}.mysql",
         owner   => $backupninja::params::configfile_owner,
         group   => $backupninja::params::configfile_group,
         mode    => $backupninja::params::taskfile_mode,
-        content => template('backupninja/backup.d/pgsql.erb'),
+        content => template('backupninja/backup.d/mysql.erb'),
         require => Package['backupninja']
     }
 }

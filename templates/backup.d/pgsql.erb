@@ -3,7 +3,7 @@
 # -----------------------------------------------------------------
 ### backupninja PostgreSQL config file ###
 
-<% if scope.lookupvar('when') != '' -%> 
+<% if scope.lookupvar('when') != '' -%>
 when = <%= scope.lookupvar('when') %>
 <% end -%>
 
@@ -14,18 +14,18 @@ when = <%= scope.lookupvar('when') %>
 
 # backupdir = <dir> (default: /var/backups/postgres)
 # where to dump the backups
-backupdir = <%= backupdir %>
+backupdir = <%= @backupdir %>
 
 # databases = < all | db1 db2 db3 > (default = all)
-# which databases to backup. should either be the word 'all' or a 
+# which databases to backup. should either be the word 'all' or a
 # space separated list of database names.
 # Note: when using 'all', pg_dumpall is used instead of pg_dump, which means
 # that cluster-wide data (such as users and groups) are saved.
-databases = <%= databases %>
+databases = <%= @databases %>
 
 # compress = < yes | no > (default = yes)
-# if yes, compress the pg_dump/pg_dumpall output. 
-compress = <%= compress %>
+# if yes, compress the pg_dump/pg_dumpall output.
+compress = <%= @compress %>
 
 ### You can also set the following variables in /etc/backupninja.conf:
 # PGSQLDUMP: pg_dump path (default: /usr/bin/pg_dump)

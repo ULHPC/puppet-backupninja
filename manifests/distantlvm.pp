@@ -24,9 +24,17 @@
 #
 # You can then add a mydef specification as follows:
 #
-#      backupninja::distantlvm {
-#
-#      }
+#    backupninja::distantlvm { 'backup_dom0_test':
+#        ensure     => 'present',
+#        backupdir  => '/data/backup_dom0',
+#        ssh_host   => 'dom0-server.uni.lu',
+#        ssh_user   => 'localuser',
+#        ssh_port   => '22',
+#        vg         => vg_domU,
+#        lv         => 'domu1-disk domu2-disk domu3-disk',
+#        keep       => 5,
+#        when       => 'mondays at 03:00'
+#    }
 #
 # == Warnings
 #
