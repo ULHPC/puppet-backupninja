@@ -31,5 +31,28 @@
       ]
     }
   ],
-  "tags": ["backupninja", "backup", "rsync", "lvm", "snapshot", "ldap", "mysql", "postgresql"]
+  "tags": [
+    "backupninja",
+    "backup",
+    "rsync",
+    "lvm",
+    "snapshot",
+    "ldap",
+    "mysql",
+    "postgresql"
+  ],
+  "classes": [
+    "backupninja",
+    "backupninja::common",
+    "backupninja::debian",
+    "backupninja::params",
+    "backupninja::redhat"
+  ],
+  "definitions": [
+    "backupninja::distantlvm",
+    "backupninja::ldap",
+    "backupninja::mysql",
+    "backupninja::pgsql",
+    "backupninja::rsync"
+  ]
 }
