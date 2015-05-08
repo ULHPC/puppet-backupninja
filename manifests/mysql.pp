@@ -24,9 +24,9 @@
 #
 # You can then add a mydef specification as follows:
 #
-#      backupninja::mysql {
-#
-#      }
+#    backupninja::mysql { 'backup_all_db':
+#        ensure => present,
+#    }
 #
 # == Warnings
 #

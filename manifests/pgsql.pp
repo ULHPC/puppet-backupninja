@@ -25,7 +25,7 @@
 # You can then add a mydef specification as follows:
 #
 #      backupninja::pgsql {
-#
+#          ensure  => 'present',
 #      }
 #
 # == Warnings

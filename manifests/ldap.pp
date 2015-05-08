@@ -24,9 +24,9 @@
 #
 # You can then add a mydef specification as follows:
 #
-#      backupninja::ldap {
-#
-#      }
+#    backupninja::ldap { 'backup_ldap-server':
+#        ensure => present,
+#    }
 #
 # == Warnings
 #
@@ -36,19 +36,19 @@
 # [Remember: No empty lines between comments and class definition]
 #
 define backupninja::ldap(
-    $ensure     = 'present',
-    $databases  = 'all',
-    $backupdir  = '/var/backups/ldap',
-    $conf       = '/etc/ldap/slapd.conf',
-    $compress   = 'yes',
-    $restart    = 'no',
+    $ensure       = 'present',
+    $databases    = 'all',
+    $backupdir    = '/var/backups/ldap',
+    $conf         = '/etc/ldap/slapd.conf',
+    $compress     = 'yes',
+    $restart      = 'no',
     $backupmethod = 'slapcat',
     $passwordfile = '',
-    $binddn     = 'cn=admin,dc=uni,dc=lu',
-    $ldaphost   = 'localhost',
-    $ssl        = 'no',
-    $tls        = 'yes',
-    $when       = ''
+    $binddn       = 'cn=admin,dc=uni,dc=lu',
+    $ldaphost     = 'localhost',
+    $ssl          = 'no',
+    $tls          = 'yes',
+    $when         = ''
 )
 {
     include backupninja::params
