@@ -51,7 +51,7 @@ define backupninja::ldap(
     $when         = ''
 )
 {
-    include backupninja::params
+    include ::backupninja::params
 
     # $name is provided at define invocation
     $basename = $name
@@ -81,7 +81,7 @@ define backupninja::ldap(
         group   => $backupninja::params::configfile_group,
         mode    => $backupninja::params::taskfile_mode,
         content => template('backupninja/backup.d/ldap.erb'),
-        require => Package['backupninja']
+        require => Package['backupninja'],
     }
 }
 

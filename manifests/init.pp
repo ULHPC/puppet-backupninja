@@ -120,8 +120,8 @@ inherits backupninja::params
     }
 
     case $::operatingsystem {
-        debian, ubuntu:         { include backupninja::common::debian }
-        centos, redhat:         { include backupninja::common::redhat }
+        'debian', 'ubuntu':         { include ::backupninja::common::debian }
+        'centos', 'redhat':         { include ::backupninja::common::redhat }
         default: {
             fail("Module ${module_name} is not supported on ${::operatingsystem}")
         }

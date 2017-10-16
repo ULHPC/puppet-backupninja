@@ -2,20 +2,20 @@ GEM
   remote: https://rubygems.org/
   specs:
     CFPropertyList (2.2.8)
-    activesupport (4.2.9)
+    activesupport (4.2.10)
       i18n (~> 0.7)
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     artii (2.1.2)
     awesome_print (1.8.0)
+    concurrent-ruby (1.0.5)
     configatron (3.2.0)
     deep_merge (1.0.1)
     diff-lcs (1.2.5)
     diffy (3.2.0)
     facter (2.4.6)
-      CFPropertyList (~> 2.2.6)
-    falkorlib (0.7.8)
+    falkorlib (0.7.9)
       activesupport (~> 4.0)
       artii (>= 2.1)
       awesome_print (~> 1.2)
@@ -35,7 +35,8 @@ GEM
     git_remote_branch (0.3.8)
     hiera (3.2.0)
       json_pure
-    i18n (0.8.6)
+    i18n (0.9.0)
+      concurrent-ruby (~> 1.0)
     json (1.8.6)
     json_pure (2.0.2)
     license-generator (0.4.1)
@@ -89,4 +90,4 @@ DEPENDENCIES
   rspec-puppet
 
 BUNDLED WITH
-   1.15.0
+   1.15.4

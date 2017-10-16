@@ -14,6 +14,6 @@ class backupninja::common::debian inherits backupninja::common {
         group   => $backupninja::params::configfile_group,
         mode    => $backupninja::params::taskfile_mode,
         source  => 'puppet:///modules/backupninja/handler_rsync_118d7587',
-        require => Package['backupninja']
+        require => Package['backupninja'],
     }
 }

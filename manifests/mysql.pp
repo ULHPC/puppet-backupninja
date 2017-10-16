@@ -49,7 +49,7 @@ define backupninja::mysql(
     $when       = ''
 )
 {
-    include backupninja::params
+    include ::backupninja::params
 
     # $name is provided at define invocation
     $basename = $name
@@ -71,7 +71,7 @@ define backupninja::mysql(
         group   => $backupninja::params::configfile_group,
         mode    => $backupninja::params::taskfile_mode,
         content => template('backupninja/backup.d/mysql.erb'),
-        require => Package['backupninja']
+        require => Package['backupninja'],
     }
 }
 
