@@ -9,7 +9,7 @@
 
 Install and configure backupninja
 
-      Copyright (c) 2017 UL HPC Management Team <hpc-sysadmins@uni.lu>
+      Copyright (c) 2017 UL HPC Team <hpc-sysadmins@uni.lu>
       
 
 | [Project Page](https://github.com/ULHPC/puppet-backupninja) | [Sources](https://github.com/ULHPC/puppet-backupninja) | [Documentation](https://ulhpc-backupninja.readthedocs.org/en/latest/) | [Issues](https://github.com/ULHPC/puppet-backupninja/issues) |
