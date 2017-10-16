@@ -30,10 +30,7 @@ class backupninja::params {
     ###########################################
 
     # ensure the presence (or absence) of backupninja
-    $ensure = $::backupninja_ensure ? {
-        ''      => 'present',
-        default => $::backupninja_ensure
-    }
+    $ensure          = 'present'
 
     $loglevel        = '4'
     $reportemail     = 'root'
