@@ -55,7 +55,7 @@ define backupninja::distantlvm(
     $keep       = '0'
 )
 {
-    include backupninja::params
+    include ::backupninja::params
 
     # $name is provided at define invocation
     $basename = $name
@@ -78,7 +78,7 @@ define backupninja::distantlvm(
             group   => $backupninja::params::configfile_group,
             mode    => $backupninja::params::taskfile_mode,
             source  => 'puppet:///modules/backupninja/handler_distantlvm',
-            require => Package['backupninja']
+            require => Package['backupninja'],
         }
     }
 
@@ -90,7 +90,7 @@ define backupninja::distantlvm(
             group   => $backupninja::params::configfile_group,
             mode    => $backupninja::params::lvmnetbackup_mode,
             source  => 'puppet:///modules/backupninja/lvm_net_backup.sh',
-            require => Package['backupninja']
+            require => Package['backupninja'],
         }
     }
 
@@ -101,7 +101,7 @@ define backupninja::distantlvm(
         group   => $backupninja::params::configfile_group,
         mode    => $backupninja::params::taskfile_mode,
         content => template('backupninja/backup.d/distantlvm.erb'),
-        require => Package['backupninja']
+        require => Package['backupninja'],
     }
 }
 

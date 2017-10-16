@@ -12,7 +12,7 @@
 class backupninja::common {
 
     # Load the variables used in this module. Check the backupninja-params.pp file
-    require backupninja::params
+    require ::backupninja::params
 
     package { 'backupninja':
         ensure => $backupninja::ensure,
@@ -27,7 +27,7 @@ class backupninja::common {
         group   => $backupninja::params::configfile_group,
         mode    => $backupninja::params::configfile_mode,
         content => template('backupninja/backupninja.conf.erb'),
-        require => Package['backupninja']
+        require => Package['backupninja'],
     }
 
 }

@@ -88,7 +88,7 @@ define backupninja::rsync(
     $dest_remote_rsync      = 'rsync'
 )
 {
-    include backupninja::params
+    include ::backupninja::params
 
     # $name is provided at define invocation
     $basename = $name
@@ -125,7 +125,7 @@ define backupninja::rsync(
         owner   => $backupninja::params::configfile_owner,
         group   => $backupninja::params::configfile_group,
         mode    => $backupninja::params::taskfile_mode,
-        require => Exec["mkdir_${mountpoint}/${backupdir}"]
+        require => Exec["mkdir_${mountpoint}/${backupdir}"],
     }
     exec { "mkdir_${mountpoint}/${backupdir}":
         path    => [ '/bin', '/usr/bin' ],
@@ -140,7 +140,7 @@ define backupninja::rsync(
         group   => $backupninja::params::configfile_group,
         mode    => $backupninja::params::taskfile_mode,
         content => template('backupninja/backup.d/rsync.erb'),
-        require => Package['backupninja']
+        require => Package['backupninja'],
     }
 
 }
