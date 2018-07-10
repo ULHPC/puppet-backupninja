@@ -50,9 +50,11 @@
   ],
   "definitions": [
     "backupninja::distantlvm",
+    "backupninja::distantqcow2",
     "backupninja::ldap",
     "backupninja::mysql",
     "backupninja::pgsql",
     "backupninja::rsync"
-  ]
+  ],
+  "docs_project": "ulhpc-backupninja"
 }
