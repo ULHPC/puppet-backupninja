@@ -1,12 +1,12 @@
-# File::      <tt>backupninja-distantlvm.pp</tt>
+# File::      <tt>backupninja-distantqcow2.pp</tt>
 # Author::    Hyacinthe Cartiaux (hyacinthe.cartiaux@uni.lu)
 # Copyright:: Copyright (c) 2012 Hyacinthe Cartiaux
 # License::   GPLv3
 #
 # ------------------------------------------------------------------------------
-# = Defines: backupninja::distantlvm
+# = Defines: backupninja::distantqcow2
 #
-# Configure and manage LVM backup with backupninja
+# Configure and manage QCow2 backup with backupninja
 #
 # == Pre-requisites
 #
@@ -24,17 +24,9 @@
 #
 # You can then add a mydef specification as follows:
 #
-#    backupninja::distantlvm { 'backup_dom0_test':
-#        ensure     => 'present',
-#        backupdir  => '/data/backup_dom0',
-#        ssh_host   => 'dom0-server.uni.lu',
-#        ssh_user   => 'localuser',
-#        ssh_port   => '22',
-#        vg         => vg_domU,
-#        lv         => 'domu1-disk domu2-disk domu3-disk',
-#        keep       => 5,
-#        when       => 'mondays at 03:00'
-#    }
+#      backupninja::distantqcow2 {
+#
+#      }
 #
 # == Warnings
 #
@@ -43,12 +35,11 @@
 #
 # [Remember: No empty lines between comments and class definition]
 #
-define backupninja::distantlvm(
+define backupninja::distantqcow2(
     $ssh_host,
-    $vg,
-    $lv,
+    $vms,
     $ensure     = 'present',
-    $backupdir  = '/var/backups/distantlvm',
+    $backupdir  = '/var/backups/distantqcow2',
     $ssh_user   = 'localadmin',
     $ssh_port   = '8022',
     $when       = '',
@@ -61,7 +52,7 @@ define backupninja::distantlvm(
     $basename = $name
 
     if ! ($ensure in [ 'present', 'absent' ]) {
-        fail("backupninja::distantlvm 'ensure' parameter must be set to either 'absent' or 'present'")
+        fail("backupninja::distantqcow2 'ensure' parameter must be set to either 'absent' or 'present'")
     }
 
     if ($backupninja::ensure != $ensure) {
@@ -70,37 +61,37 @@ define backupninja::distantlvm(
         }
     }
 
-    if (! defined( File['/usr/share/backupninja/distantlvm']) ) {
-        file { '/usr/share/backupninja/distantlvm':
+    if (! defined( File['/usr/share/backupninja/distantqcow2']) ) {
+        file { '/usr/share/backupninja/distantqcow2':
             ensure  => $ensure,
-            path    => '/usr/share/backupninja/distantlvm',
             owner   => $backupninja::params::configfile_owner,
             group   => $backupninja::params::configfile_group,
             mode    => $backupninja::params::taskfile_mode,
-            source  => 'puppet:///modules/backupninja/handler_distantlvm',
+            path    => '/usr/share/backupninja/distantqcow2',
+            source  => 'puppet:///modules/backupninja/handler_distantqcow2',
             require => Package['backupninja'],
         }
     }
 
-    if (! defined( File['/usr/local/bin/lvm_net_backup.sh'] ) ) {
-        file { '/usr/local/bin/lvm_net_backup.sh':
+    if (! defined( File['/usr/local/bin/qcow2_net_backup.sh'] ) ) {
+        file { '/usr/local/bin/qcow2_net_backup.sh':
             ensure  => $ensure,
-            path    => '/usr/local/bin/lvm_net_backup.sh',
             owner   => $backupninja::params::configfile_owner,
             group   => $backupninja::params::configfile_group,
             mode    => $backupninja::params::netbackup_mode,
-            source  => 'puppet:///modules/backupninja/lvm_net_backup.sh',
+            path    => '/usr/local/bin/qcow2_net_backup.sh',
+            source  => 'puppet:///modules/backupninja/qcow2_net_backup.sh',
             require => Package['backupninja'],
         }
     }
 
-    file { "${basename}.distantlvm":
+    file { "${basename}.distantqcow2":
         ensure  => $ensure,
-        path    => "${backupninja::configdirectory}/${basename}.distantlvm",
         owner   => $backupninja::params::configfile_owner,
         group   => $backupninja::params::configfile_group,
         mode    => $backupninja::params::taskfile_mode,
-        content => template('backupninja/backup.d/distantlvm.erb'),
+        path    => "${backupninja::configdirectory}/${basename}.distantqcow2",
+        content => template('backupninja/backup.d/distantqcow2.erb'),
         require => Package['backupninja'],
     }
 }

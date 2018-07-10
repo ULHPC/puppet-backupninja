@@ -72,7 +72,7 @@ class backupninja::params {
     $taskfile_mode = $::operatingsystem ? {
         default => '0600',
     }
-    $lvmnetbackup_mode = $::operatingsystem ? {
+    $netbackup_mode = $::operatingsystem ? {
         default => '0755',
     }
     $configfile_owner = $::operatingsystem ? {
