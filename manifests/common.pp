@@ -30,4 +30,11 @@ class backupninja::common {
         require => Package['backupninja'],
     }
 
+    file { '/var/backups':
+        ensure  => 'directory',
+        path    => $backupninja::params::backupdir,
+        mode    => $backupninja::params::backupdir_mode,
+        require => Package['backupninja'],
+    }
+
 }
