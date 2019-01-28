@@ -81,6 +81,12 @@ class backupninja::params {
     $configfile_group = $::operatingsystem ? {
         default => 'root',
     }
+    $backupdir = $::operatingsystem ? {
+        default => '/var/backups',
+    }
+    $backupdir_mode = $::operatingsystem ? {
+        default => '0755',
+    }
 
 
 }
