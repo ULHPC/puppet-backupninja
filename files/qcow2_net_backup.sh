@@ -139,6 +139,8 @@ DRY_RUN=
 FORCE=
 
 SNAPSHOT_SIZE="1G"
+MINAVAIL="10000000"
+MINIAVAIL="1000"
 
 # Parsing
 opts=$@
@@ -238,6 +240,15 @@ if [ "x$?" != "x0" ] ; then
   fail "Can't find VM ${VM} on ${HOST} !"
 else
   BLKFILE=$($SSH "${SUDO}virsh domblklist ${VM} | grep vda | awk '{print \$2}'")
+  $SSH "${SUDO} test \$(df --output=avail . | tail -n1) -gt ${MINAVAIL} && test \$(df --output=iavail . | tail -n1) -gt ${MINIAVAIL}"
+  if [ "x$?" != "x0" ] ; then
+    fail "Not enough space to create a snapshot on ${HOST} !"
+  fi
+fi
+
+exec_cmd $DRY_RUN $SSH true
+if [ "x$?" != "x0" ] ; then
+  fail "Connection to ${HOST} failed !"
 fi
 
 ############################################
@@ -273,7 +284,9 @@ else
 
     exec_cmd $DRY_RUN gzip ${DEST_BACKUP_DIR}${DEST_BACKUP_FILE}
     if [ "x$?" != "x0" ] ; then
-      fail "Can't gzip ${DEST_BACKUP_DIR}${DEST_BACKUP_FILE} !"
+      error "Can't gzip ${DEST_BACKUP_DIR}${DEST_BACKUP_FILE} !"
+      exec_cmd $DRY_RUN rm -f ${DEST_BACKUP_DIR}${DEST_BACKUP_FILE}
+      ERR=1
     fi
 fi
 
