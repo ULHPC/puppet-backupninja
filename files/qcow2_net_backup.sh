@@ -246,11 +246,6 @@ else
   fi
 fi
 
-exec_cmd $DRY_RUN $SSH true
-if [ "x$?" != "x0" ] ; then
-  fail "Connection to ${HOST} failed !"
-fi
-
 ############################################
 ############ Snapshot creation #############
 ############################################
