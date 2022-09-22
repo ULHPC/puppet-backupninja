@@ -50,9 +50,9 @@ class backupninja::params {
     $vservers        = 'no'
 
     $libdirectory    = $::operatingsystem ? {
-        /(?i-mx:centos|fedora|redhat)/ => '/usr/libexec/backupninja',
-        /(?i-mx:debian|ubuntu)/        => '/usr/lib/backupninja',
-        default                        => '/usr/lib/backupninja'
+        /(?i-mx:centos|fedora|redhat|rocky)/ => '/usr/libexec/backupninja',
+        /(?i-mx:debian|ubuntu)/              => '/usr/lib/backupninja',
+        default                              => '/usr/lib/backupninja'
     }
 
     #### MODULE INTERNAL VARIABLES  #########
