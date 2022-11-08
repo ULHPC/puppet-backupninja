@@ -16,7 +16,7 @@
 node default {
 
     class { 'backupninja':
-      ensure => 'present'
+      ensure => 'present',
     }
 
     backupninja::rsync { 'backup_rsync_test':
@@ -34,7 +34,7 @@ node default {
       keepdaily           => '10',
       keepweekly          => '5',
       keepmonthly         => '3',
-      source_remote_rsync => 'sudo rsync'
+      source_remote_rsync => 'sudo rsync',
     }
 
 

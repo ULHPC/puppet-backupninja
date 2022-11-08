@@ -16,7 +16,7 @@
 node default {
 
     class { 'backupninja':
-      ensure => 'present'
+      ensure => 'present',
     }
 
     backupninja::distantlvm { 'backup_dom0_test':
@@ -28,7 +28,7 @@ node default {
         vg        => vg_domU,
         lv        => 'domu1-disk domu2-disk domu3-disk',
         keep      => 5,
-        when      => 'mondays at 03:00'
+        when      => 'mondays at 03:00',
     }
 
 }

@@ -16,7 +16,7 @@
 node default {
 
     class { 'backupninja':
-      ensure => 'present'
+      ensure => 'present',
     }
 
     backupninja::mysql { 'backup_mysql-server':
