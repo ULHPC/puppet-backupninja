@@ -16,7 +16,7 @@
 node default {
 
     class { 'backupninja':
-      ensure => 'present'
+      ensure => 'present',
     }
 
     backupninja::pgsql { 'backup_pgsql-server':
