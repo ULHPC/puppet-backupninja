@@ -119,11 +119,11 @@ inherits backupninja::params
         fail("backupninja 'ensure' parameter must be set to either 'absent' or 'present'")
     }
 
-    case $::operatingsystem {
+    case $::facts['os']['name'] {
         'debian', 'ubuntu':          { include ::backupninja::common::debian }
         'centos', 'redhat', 'rocky': { include ::backupninja::common::redhat }
         default: {
-            fail("Module ${module_name} is not supported on ${::operatingsystem}")
+            fail("Module ${module_name} is not supported on ${::facts['os']['name']}")
         }
     }
 }

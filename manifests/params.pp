@@ -49,7 +49,7 @@ class backupninja::params {
     $when            = 'everyday at 01:00'
     $vservers        = 'no'
 
-    $libdirectory    = $::operatingsystem ? {
+    $libdirectory    = $::facts['os']['name'] ? {
         /(?i-mx:centos|fedora|redhat|rocky)/ => '/usr/libexec/backupninja',
         /(?i-mx:debian|ubuntu)/              => '/usr/lib/backupninja',
         default                              => '/usr/lib/backupninja'
@@ -59,32 +59,32 @@ class backupninja::params {
     # (Modify to adapt to unsupported OSes)
     #######################################
     # backupninja packages
-    $packagename = $::operatingsystem ? {
+    $packagename = $::facts['os']['name'] ? {
         default => 'backupninja',
     }
 
-    $configfile = $::operatingsystem ? {
+    $configfile = $::facts['os']['name'] ? {
         default => '/etc/backupninja.conf',
     }
-    $configfile_mode = $::operatingsystem ? {
+    $configfile_mode = $::facts['os']['name'] ? {
         default => '0644',
     }
-    $taskfile_mode = $::operatingsystem ? {
+    $taskfile_mode = $::facts['os']['name'] ? {
         default => '0600',
     }
-    $netbackup_mode = $::operatingsystem ? {
+    $netbackup_mode = $::facts['os']['name'] ? {
         default => '0755',
     }
-    $configfile_owner = $::operatingsystem ? {
+    $configfile_owner = $::facts['os']['name'] ? {
         default => 'root',
     }
-    $configfile_group = $::operatingsystem ? {
+    $configfile_group = $::facts['os']['name'] ? {
         default => 'root',
     }
-    $backupdir = $::operatingsystem ? {
+    $backupdir = $::facts['os']['name'] ? {
         default => '/var/backups',
     }
-    $backupdir_mode = $::operatingsystem ? {
+    $backupdir_mode = $::facts['os']['name'] ? {
         default => '0755',
     }
 
