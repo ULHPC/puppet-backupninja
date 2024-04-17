@@ -19,6 +19,14 @@ class backupninja::common {
         name   => $backupninja::params::packagename,
     }
 
+    file { 'backup.d':
+        ensure  => 'directory',
+        path    => $backupninja::params::configdirectory,
+        owner   => $backupninja::params::configfile_owner,
+        group   => $backupninja::params::configfile_group,
+        mode    => '0700',
+        require => Package['backupninja'],
+    }
 
     file { 'backupninja.conf':
         ensure  => $backupninja::ensure,
