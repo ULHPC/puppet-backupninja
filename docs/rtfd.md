@@ -2,8 +2,6 @@ The documentation for this puppet module is handled by [Read the Docs](https://r
 
 * [Reference documentation](https://docs.readthedocs.org/en/latest/)
 
-By default, the [puppet-backupninja](https://github.com/ULHPC/puppet-backupninja) repository is bound to the [ulhpc-backupninja](http://ulhpc-backupninja.rtfd.org) project on Read the Docs (to avoid confusion with other backupninja projects). 
-
 You might wish to generate locally the docs:
 
 * Install [`mkdocs`](http://www.mkdocs.org/#installation)
