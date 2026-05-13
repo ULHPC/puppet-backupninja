@@ -8,12 +8,12 @@
 #
 # Specialization class for Debian systems
 class backupninja::common::debian inherits backupninja::common {
-    file { '/usr/share/backupninja/rsync':
-        ensure  => $backupninja::ensure,
-        owner   => $backupninja::params::configfile_owner,
-        group   => $backupninja::params::configfile_group,
-        mode    => $backupninja::params::taskfile_mode,
-        source  => 'puppet:///modules/backupninja/handler_rsync_118d7587',
-        require => Package['backupninja'],
-    }
+  file { '/usr/share/backupninja/rsync':
+    ensure  => $backupninja::ensure,
+    owner   => $backupninja::params::configfile_owner,
+    group   => $backupninja::params::configfile_group,
+    mode    => $backupninja::params::taskfile_mode,
+    source  => 'puppet:///modules/backupninja/handler_rsync_118d7587',
+    require => Package['backupninja'],
+  }
 }

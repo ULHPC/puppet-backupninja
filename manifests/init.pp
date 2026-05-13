@@ -91,39 +91,38 @@
 #
 # [Remember: No empty lines between comments and class definition]
 #
-class backupninja(
-    $ensure          = $backupninja::params::ensure,
-    $log_level       = $backupninja::params::loglevel,
-    $reportemail     = $backupninja::params::reportemail,
-    $reportsuccess   = $backupninja::params::reportsuccess,
-    $reportinfo      = $backupninja::params::reportinfo,
-    $reportwarning   = $backupninja::params::reportwarning,
-    $reportspace     = $backupninja::params::reportspace,
-    $reporthost      = $backupninja::params::reporthost,
-    $reportuser      = $backupninja::params::reportuser,
-    $reportdirectory = $backupninja::params::reportdirectory,
-    $admingroup      = $backupninja::params::admingroup,
-    $logfile         = $backupninja::params::logfile,
-    $configdirectory = $backupninja::params::configdirectory,
-    $scriptdirectory = $backupninja::params::scriptdirectory,
-    $libdirectory    = $backupninja::params::libdirectory,
-    $usecolors       = $backupninja::params::usecolors,
-    $when            = $backupninja::params::when,
-    $vservers        = $backupninja::params::vservers
+class backupninja (
+  $ensure          = $backupninja::params::ensure,
+  $log_level       = $backupninja::params::loglevel,
+  $reportemail     = $backupninja::params::reportemail,
+  $reportsuccess   = $backupninja::params::reportsuccess,
+  $reportinfo      = $backupninja::params::reportinfo,
+  $reportwarning   = $backupninja::params::reportwarning,
+  $reportspace     = $backupninja::params::reportspace,
+  $reporthost      = $backupninja::params::reporthost,
+  $reportuser      = $backupninja::params::reportuser,
+  $reportdirectory = $backupninja::params::reportdirectory,
+  $admingroup      = $backupninja::params::admingroup,
+  $logfile         = $backupninja::params::logfile,
+  $configdirectory = $backupninja::params::configdirectory,
+  $scriptdirectory = $backupninja::params::scriptdirectory,
+  $libdirectory    = $backupninja::params::libdirectory,
+  $usecolors       = $backupninja::params::usecolors,
+  $when            = $backupninja::params::when,
+  $vservers        = $backupninja::params::vservers
 )
-inherits backupninja::params
-{
-    info ("Configuring backupninja (with ensure = ${ensure})")
+inherits backupninja::params {
+  info ("Configuring backupninja (with ensure = ${ensure})")
 
-    if ! ($ensure in [ 'present', 'absent' ]) {
-        fail("backupninja 'ensure' parameter must be set to either 'absent' or 'present'")
-    }
+  if ! ($ensure in ['present', 'absent']) {
+    fail("backupninja 'ensure' parameter must be set to either 'absent' or 'present'")
+  }
 
-    case $::facts['os']['name'] {
-        'debian', 'ubuntu':          { include ::backupninja::common::debian }
-        'centos', 'redhat', 'rocky': { include ::backupninja::common::redhat }
-        default: {
-            fail("Module ${module_name} is not supported on ${::facts['os']['name']}")
-        }
+  case $::facts['os']['name'] {
+    'debian', 'ubuntu':          { include backupninja::common::debian }
+    'centos', 'redhat', 'rocky': { include backupninja::common::redhat }
+    default: {
+      fail("Module ${module_name} is not supported on ${::facts['os']['name']}")
     }
+  }
 }

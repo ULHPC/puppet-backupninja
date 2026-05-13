@@ -23,71 +23,66 @@
 # [Remember: No empty lines between comments and class definition]
 #
 class backupninja::params {
+  ######## DEFAULTS FOR VARIABLES USERS CAN SET ##########################
+  # (Here are set the defaults, provide your custom variables externally)
+  # (The default used is in the line with '')
+  ###########################################
 
-    ######## DEFAULTS FOR VARIABLES USERS CAN SET ##########################
-    # (Here are set the defaults, provide your custom variables externally)
-    # (The default used is in the line with '')
-    ###########################################
+  # ensure the presence (or absence) of backupninja
+  $ensure          = 'present'
 
-    # ensure the presence (or absence) of backupninja
-    $ensure          = 'present'
+  $loglevel        = '4'
+  $reportemail     = 'root'
+  $reportsuccess   = 'no'
+  $reportinfo      = 'no'
+  $reportwarning   = 'yes'
+  $reportspace     = 'yes'
+  $reporthost      = ''
+  $reportuser      = 'ninja'
+  $reportdirectory = '/var/lib/backupninja/reports'
+  $admingroup      = 'root'
+  $logfile         = '/var/log/backupninja.log'
+  $configdirectory = '/etc/backup.d'
+  $scriptdirectory = '/usr/share/backupninja'
+  $usecolors       = 'yes'
+  $when            = 'everyday at 01:00'
+  $vservers        = 'no'
 
-    $loglevel        = '4'
-    $reportemail     = 'root'
-    $reportsuccess   = 'no'
-    $reportinfo      = 'no'
-    $reportwarning   = 'yes'
-    $reportspace     = 'yes'
-    $reporthost      = ''
-    $reportuser      = 'ninja'
-    $reportdirectory = '/var/lib/backupninja/reports'
-    $admingroup      = 'root'
-    $logfile         = '/var/log/backupninja.log'
-    $configdirectory = '/etc/backup.d'
-    $scriptdirectory = '/usr/share/backupninja'
-    $usecolors       = 'yes'
-    $when            = 'everyday at 01:00'
-    $vservers        = 'no'
+  $libdirectory    = $::facts['os']['name'] ? {
+    /(?i-mx:centos|fedora|redhat|rocky)/ => '/usr/libexec/backupninja',
+    /(?i-mx:debian|ubuntu)/              => '/usr/lib/backupninja',
+    default                              => '/usr/lib/backupninja'
+  }
 
-    $libdirectory    = $::facts['os']['name'] ? {
-        /(?i-mx:centos|fedora|redhat|rocky)/ => '/usr/libexec/backupninja',
-        /(?i-mx:debian|ubuntu)/              => '/usr/lib/backupninja',
-        default                              => '/usr/lib/backupninja'
-    }
+  #### MODULE INTERNAL VARIABLES  #########
+  # (Modify to adapt to unsupported OSes)
+  #######################################
+  # backupninja packages
+  $packagename = $::facts['os']['name'] ? {
+    default => 'backupninja',
+  }
 
-    #### MODULE INTERNAL VARIABLES  #########
-    # (Modify to adapt to unsupported OSes)
-    #######################################
-    # backupninja packages
-    $packagename = $::facts['os']['name'] ? {
-        default => 'backupninja',
-    }
-
-    $configfile = $::facts['os']['name'] ? {
-        default => '/etc/backupninja.conf',
-    }
-    $configfile_mode = $::facts['os']['name'] ? {
-        default => '0644',
-    }
-    $taskfile_mode = $::facts['os']['name'] ? {
-        default => '0600',
-    }
-    $netbackup_mode = $::facts['os']['name'] ? {
-        default => '0755',
-    }
-    $configfile_owner = $::facts['os']['name'] ? {
-        default => 'root',
-    }
-    $configfile_group = $::facts['os']['name'] ? {
-        default => 'root',
-    }
-    $backupdir = $::facts['os']['name'] ? {
-        default => '/var/backups',
-    }
-    $backupdir_mode = $::facts['os']['name'] ? {
-        default => '0755',
-    }
-
-
-}
-
+  $configfile = $::facts['os']['name'] ? {
+    default => '/etc/backupninja.conf',
+  }
+  $configfile_mode = $::facts['os']['name'] ? {
+    default => '0644',
+  }
+  $taskfile_mode = $::facts['os']['name'] ? {
+    default => '0600',
+  }
+  $netbackup_mode = $::facts['os']['name'] ? {
+    default => '0755',
+  }
+  $configfile_owner = $::facts['os']['name'] ? {
+    default => 'root',
+  }
+  $configfile_group = $::facts['os']['name'] ? {
+    default => 'root',
+  }
+  $backupdir = $::facts['os']['name'] ? {
+    default => '/var/backups',
+  }
+  $backupdir_mode = $::facts['os']['name'] ? {
+    default => '0755',
+} }

@@ -10,39 +10,37 @@
 #
 # Note: respect the Naming standard provided here[http://projects.puppetlabs.com/projects/puppet/wiki/Module_Standards]
 class backupninja::common {
+  # Load the variables used in this module. Check the backupninja-params.pp file
+  require backupninja::params
 
-    # Load the variables used in this module. Check the backupninja-params.pp file
-    require ::backupninja::params
+  package { 'backupninja':
+    ensure => $backupninja::ensure,
+    name   => $backupninja::params::packagename,
+  }
 
-    package { 'backupninja':
-        ensure => $backupninja::ensure,
-        name   => $backupninja::params::packagename,
-    }
+  file { 'backup.d':
+    ensure  => 'directory',
+    path    => $backupninja::params::configdirectory,
+    owner   => $backupninja::params::configfile_owner,
+    group   => $backupninja::params::configfile_group,
+    mode    => '0700',
+    require => Package['backupninja'],
+  }
 
-    file { 'backup.d':
-        ensure  => 'directory',
-        path    => $backupninja::params::configdirectory,
-        owner   => $backupninja::params::configfile_owner,
-        group   => $backupninja::params::configfile_group,
-        mode    => '0700',
-        require => Package['backupninja'],
-    }
+  file { 'backupninja.conf':
+    ensure  => $backupninja::ensure,
+    path    => $backupninja::params::configfile,
+    owner   => $backupninja::params::configfile_owner,
+    group   => $backupninja::params::configfile_group,
+    mode    => $backupninja::params::configfile_mode,
+    content => template('backupninja/backupninja.conf.erb'),
+    require => Package['backupninja'],
+  }
 
-    file { 'backupninja.conf':
-        ensure  => $backupninja::ensure,
-        path    => $backupninja::params::configfile,
-        owner   => $backupninja::params::configfile_owner,
-        group   => $backupninja::params::configfile_group,
-        mode    => $backupninja::params::configfile_mode,
-        content => template('backupninja/backupninja.conf.erb'),
-        require => Package['backupninja'],
-    }
-
-    file { '/var/backups':
-        ensure  => 'directory',
-        path    => $backupninja::params::backupdir,
-        mode    => $backupninja::params::backupdir_mode,
-        require => Package['backupninja'],
-    }
-
+  file { '/var/backups':
+    ensure  => 'directory',
+    path    => $backupninja::params::backupdir,
+    mode    => $backupninja::params::backupdir_mode,
+    require => Package['backupninja'],
+  }
 }

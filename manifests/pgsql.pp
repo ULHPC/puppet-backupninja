@@ -35,39 +35,35 @@
 #
 # [Remember: No empty lines between comments and class definition]
 #
-define backupninja::pgsql(
-    $ensure     = 'present',
-    $databases  = 'all',
-    $backupdir  = '/var/backups/pgsql',
-    $compress   = 'yes',
-    $when       = ''
-)
-{
-    include ::backupninja::params
+define backupninja::pgsql (
+  $ensure     = 'present',
+  $databases  = 'all',
+  $backupdir  = '/var/backups/pgsql',
+  $compress   = 'yes',
+  $when       = ''
+) {
+  include backupninja::params
 
-    # $name is provided at define invocation
-    $basename = $name
+  # $name is provided at define invocation
+  $basename = $name
 
-    if ! ($ensure in [ 'present', 'absent' ]) {
-        fail("backupninja::pgsql 'ensure' parameter must be set to either 'absent' or 'present'")
+  if ! ($ensure in ['present', 'absent']) {
+    fail("backupninja::pgsql 'ensure' parameter must be set to either 'absent' or 'present'")
+  }
+
+  if ($backupninja::ensure != $ensure) {
+    if ($backupninja::ensure != 'present') {
+      fail("Cannot configure a backupninja '${basename}' as backupninja::ensure is NOT set to present (but ${backupninja::ensure})")
     }
+  }
 
-    if ($backupninja::ensure != $ensure) {
-        if ($backupninja::ensure != 'present') {
-            fail("Cannot configure a backupninja '${basename}' as backupninja::ensure is NOT set to present (but ${backupninja::ensure})")
-        }
-    }
-
-    file { "${basename}.pgsql":
-        ensure  => $ensure,
-        path    => "${backupninja::configdirectory}/${basename}.pgsql",
-        owner   => $backupninja::params::configfile_owner,
-        group   => $backupninja::params::configfile_group,
-        mode    => $backupninja::params::taskfile_mode,
-        content => template('backupninja/backup.d/pgsql.erb'),
-        require => Package['backupninja'],
-    }
+  file { "${basename}.pgsql":
+    ensure  => $ensure,
+    path    => "${backupninja::configdirectory}/${basename}.pgsql",
+    owner   => $backupninja::params::configfile_owner,
+    group   => $backupninja::params::configfile_group,
+    mode    => $backupninja::params::taskfile_mode,
+    content => template('backupninja/backup.d/pgsql.erb'),
+    require => Package['backupninja'],
+  }
 }
-
-
-
