@@ -7,4 +7,4 @@
 # = Class: backupninja::common::redhat
 #
 # Specialization class for Redhat systems
-class backupninja::common::redhat inherits backupninja::common { }
+class backupninja::common::redhat inherits backupninja::common {}

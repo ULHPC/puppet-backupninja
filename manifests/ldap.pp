@@ -35,55 +35,51 @@
 #
 # [Remember: No empty lines between comments and class definition]
 #
-define backupninja::ldap(
-    $ensure       = 'present',
-    $databases    = 'all',
-    $backupdir    = '/var/backups/ldap',
-    $conf         = '/etc/ldap/slapd.conf',
-    $compress     = 'yes',
-    $restart      = 'no',
-    $backupmethod = 'slapcat',
-    $passwordfile = '',
-    $binddn       = 'cn=admin,dc=uni,dc=lu',
-    $ldaphost     = 'localhost',
-    $ssl          = 'no',
-    $tls          = 'yes',
-    $when         = ''
-)
-{
-    include ::backupninja::params
+define backupninja::ldap (
+  $ensure       = 'present',
+  $databases    = 'all',
+  $backupdir    = '/var/backups/ldap',
+  $conf         = '/etc/ldap/slapd.conf',
+  $compress     = 'yes',
+  $restart      = 'no',
+  $backupmethod = 'slapcat',
+  $passwordfile = '',
+  $binddn       = 'cn=admin,dc=uni,dc=lu',
+  $ldaphost     = 'localhost',
+  $ssl          = 'no',
+  $tls          = 'yes',
+  $when         = ''
+) {
+  include backupninja::params
 
-    # $name is provided at define invocation
-    $basename = $name
+  # $name is provided at define invocation
+  $basename = $name
 
-    if ! ($ensure in [ 'present', 'absent' ]) {
-        fail("backupninja::ldap 'ensure' parameter must be set to either 'absent' or 'present'")
+  if ! ($ensure in ['present', 'absent']) {
+    fail("backupninja::ldap 'ensure' parameter must be set to either 'absent' or 'present'")
+  }
+
+  if ! ($backupmethod in ['slapcat', 'ldapsearch']) {
+    fail("backupninja::ldap 'method' parameter must be set to either 'slapcat' or 'ldapsearch'")
+  }
+
+  if ($backupmethod == 'ldapsearch' and ($binddn == '' or $ldaphost == '')) {
+    fail("backupninja::ldap 'binddn' and 'ldaphost' parameters must be set if method is 'ldapsearch'")
+  }
+
+  if ($backupninja::ensure != $ensure) {
+    if ($backupninja::ensure != 'present') {
+      fail("Cannot configure a backupninja '${basename}' as backupninja::ensure is NOT set to present (but ${backupninja::ensure})")
     }
+  }
 
-    if ! ($backupmethod in [ 'slapcat', 'ldapsearch' ]) {
-        fail("backupninja::ldap 'method' parameter must be set to either 'slapcat' or 'ldapsearch'")
-    }
-
-    if ($backupmethod == 'ldapsearch' and ($binddn == '' or $ldaphost == '')) {
-        fail("backupninja::ldap 'binddn' and 'ldaphost' parameters must be set if method is 'ldapsearch'")
-    }
-
-    if ($backupninja::ensure != $ensure) {
-        if ($backupninja::ensure != 'present') {
-            fail("Cannot configure a backupninja '${basename}' as backupninja::ensure is NOT set to present (but ${backupninja::ensure})")
-        }
-    }
-
-    file { "${basename}.ldap":
-        ensure  => $ensure,
-        path    => "${backupninja::configdirectory}/${basename}.ldap",
-        owner   => $backupninja::params::configfile_owner,
-        group   => $backupninja::params::configfile_group,
-        mode    => $backupninja::params::taskfile_mode,
-        content => template('backupninja/backup.d/ldap.erb'),
-        require => Package['backupninja'],
-    }
+  file { "${basename}.ldap":
+    ensure  => $ensure,
+    path    => "${backupninja::configdirectory}/${basename}.ldap",
+    owner   => $backupninja::params::configfile_owner,
+    group   => $backupninja::params::configfile_group,
+    mode    => $backupninja::params::taskfile_mode,
+    content => template('backupninja/backup.d/ldap.erb'),
+    require => Package['backupninja'],
+  }
 }
-
-
-

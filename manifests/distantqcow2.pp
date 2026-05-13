@@ -35,66 +35,62 @@
 #
 # [Remember: No empty lines between comments and class definition]
 #
-define backupninja::distantqcow2(
-    $ssh_host,
-    $vms,
-    $ensure     = 'present',
-    $backupdir  = '/var/backups/distantqcow2',
-    $ssh_user   = 'localadmin',
-    $ssh_port   = '8022',
-    $when       = '',
-    $keep       = '0'
-)
-{
-    include ::backupninja::params
+define backupninja::distantqcow2 (
+  $ssh_host,
+  $vms,
+  $ensure     = 'present',
+  $backupdir  = '/var/backups/distantqcow2',
+  $ssh_user   = 'localadmin',
+  $ssh_port   = '8022',
+  $when       = '',
+  $keep       = '0'
+) {
+  include backupninja::params
 
-    # $name is provided at define invocation
-    $basename = $name
+  # $name is provided at define invocation
+  $basename = $name
 
-    if ! ($ensure in [ 'present', 'absent' ]) {
-        fail("backupninja::distantqcow2 'ensure' parameter must be set to either 'absent' or 'present'")
+  if ! ($ensure in ['present', 'absent']) {
+    fail("backupninja::distantqcow2 'ensure' parameter must be set to either 'absent' or 'present'")
+  }
+
+  if ($backupninja::ensure != $ensure) {
+    if ($backupninja::ensure != 'present') {
+      fail("Cannot configure a backupninja '${basename}' as backupninja::ensure is NOT set to present (but ${backupninja::ensure})")
     }
+  }
 
-    if ($backupninja::ensure != $ensure) {
-        if ($backupninja::ensure != 'present') {
-            fail("Cannot configure a backupninja '${basename}' as backupninja::ensure is NOT set to present (but ${backupninja::ensure})")
-        }
+  if (! defined( File['/usr/share/backupninja/distantqcow2']) ) {
+    file { '/usr/share/backupninja/distantqcow2':
+      ensure  => $ensure,
+      owner   => $backupninja::params::configfile_owner,
+      group   => $backupninja::params::configfile_group,
+      mode    => $backupninja::params::taskfile_mode,
+      path    => '/usr/share/backupninja/distantqcow2',
+      source  => 'puppet:///modules/backupninja/handler_distantqcow2',
+      require => Package['backupninja'],
     }
+  }
 
-    if (! defined( File['/usr/share/backupninja/distantqcow2']) ) {
-        file { '/usr/share/backupninja/distantqcow2':
-            ensure  => $ensure,
-            owner   => $backupninja::params::configfile_owner,
-            group   => $backupninja::params::configfile_group,
-            mode    => $backupninja::params::taskfile_mode,
-            path    => '/usr/share/backupninja/distantqcow2',
-            source  => 'puppet:///modules/backupninja/handler_distantqcow2',
-            require => Package['backupninja'],
-        }
+  if (! defined( File['/usr/local/bin/qcow2_net_backup.sh']) ) {
+    file { '/usr/local/bin/qcow2_net_backup.sh':
+      ensure  => $ensure,
+      owner   => $backupninja::params::configfile_owner,
+      group   => $backupninja::params::configfile_group,
+      mode    => $backupninja::params::netbackup_mode,
+      path    => '/usr/local/bin/qcow2_net_backup.sh',
+      source  => 'puppet:///modules/backupninja/qcow2_net_backup.sh',
+      require => Package['backupninja'],
     }
+  }
 
-    if (! defined( File['/usr/local/bin/qcow2_net_backup.sh'] ) ) {
-        file { '/usr/local/bin/qcow2_net_backup.sh':
-            ensure  => $ensure,
-            owner   => $backupninja::params::configfile_owner,
-            group   => $backupninja::params::configfile_group,
-            mode    => $backupninja::params::netbackup_mode,
-            path    => '/usr/local/bin/qcow2_net_backup.sh',
-            source  => 'puppet:///modules/backupninja/qcow2_net_backup.sh',
-            require => Package['backupninja'],
-        }
-    }
-
-    file { "${basename}.distantqcow2":
-        ensure  => $ensure,
-        owner   => $backupninja::params::configfile_owner,
-        group   => $backupninja::params::configfile_group,
-        mode    => $backupninja::params::taskfile_mode,
-        path    => "${backupninja::configdirectory}/${basename}.distantqcow2",
-        content => template('backupninja/backup.d/distantqcow2.erb'),
-        require => Package['backupninja'],
-    }
+  file { "${basename}.distantqcow2":
+    ensure  => $ensure,
+    owner   => $backupninja::params::configfile_owner,
+    group   => $backupninja::params::configfile_group,
+    mode    => $backupninja::params::taskfile_mode,
+    path    => "${backupninja::configdirectory}/${basename}.distantqcow2",
+    content => template('backupninja/backup.d/distantqcow2.erb'),
+    require => Package['backupninja'],
+  }
 }
-
-
-

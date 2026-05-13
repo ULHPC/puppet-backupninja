@@ -49,101 +49,96 @@
 #
 # [Remember: No empty lines between comments and class definition]
 #
-define backupninja::rsync(
-    $ensure      = 'present',
-    $when        = '',
-    $log         = '/var/log/backup/rsync.log',
-    $mountpoint  = '/data',
-    $backupdir   = 'rsync',
-    $compress    = 'yes',
-    $numericids  = '0',
-    $days        = '',
-    $keepdaily   = '5',
-    $keepweekly  = '3',
-    $keepmonthly = '1',
-    $lockfile    = '',
-    $nicelevel   = '0',
-    $tmp         = '/tmp',
-    $source_type            = 'remote',
-    $source_protocol        = 'ssh',
-    $source_host            = '',
-    $source_port            = '8022',
-    $source_user            = 'localadmin',
-    $source_id_file         = '',
-    $source_include         = '',
-    $source_exclude         = '',
-    $source_ssh_cmd         = 'ssh',
-    $source_rsync_cmd       = '',
-    $source_rsync_options   = '-av --delete',
-    $source_bandwidthlimit  = '',
-    $source_remote_rsync    = 'rsync',
-    $dest_type              = 'local',
-    $dest_protocol          = 'ssh',
-    $dest_host              = '',
-    $dest_port              = '',
-    $dest_user              = '',
-    $dest_id_file           = '',
-    $dest_ssh_cmd           = 'ssh',
-    $dest_bandwidthlimit    = '',
-    $dest_remote_rsync      = 'rsync'
-)
-{
-    include ::backupninja::params
+define backupninja::rsync (
+  $ensure      = 'present',
+  $when        = '',
+  $log         = '/var/log/backup/rsync.log',
+  $mountpoint  = '/data',
+  $backupdir   = 'rsync',
+  $compress    = 'yes',
+  $numericids  = '0',
+  $days        = '',
+  $keepdaily   = '5',
+  $keepweekly  = '3',
+  $keepmonthly = '1',
+  $lockfile    = '',
+  $nicelevel   = '0',
+  $tmp         = '/tmp',
+  $source_type            = 'remote',
+  $source_protocol        = 'ssh',
+  $source_host            = '',
+  $source_port            = '8022',
+  $source_user            = 'localadmin',
+  $source_id_file         = '',
+  $source_include         = '',
+  $source_exclude         = '',
+  $source_ssh_cmd         = 'ssh',
+  $source_rsync_cmd       = '',
+  $source_rsync_options   = '-av --delete',
+  $source_bandwidthlimit  = '',
+  $source_remote_rsync    = 'rsync',
+  $dest_type              = 'local',
+  $dest_protocol          = 'ssh',
+  $dest_host              = '',
+  $dest_port              = '',
+  $dest_user              = '',
+  $dest_id_file           = '',
+  $dest_ssh_cmd           = 'ssh',
+  $dest_bandwidthlimit    = '',
+  $dest_remote_rsync      = 'rsync'
+) {
+  include backupninja::params
 
-    # $name is provided at define invocation
-    $basename = $name
+  # $name is provided at define invocation
+  $basename = $name
 
-    if ! ($ensure in [ 'present', 'absent' ]) {
-        fail("backupninja::rsync 'ensure' parameter must be set to either 'absent' or 'present'")
-    }
+  if ! ($ensure in ['present', 'absent']) {
+    fail("backupninja::rsync 'ensure' parameter must be set to either 'absent' or 'present'")
+  }
 
-    if ($backupninja::ensure != $ensure) {
-        if ($backupninja::ensure != 'present') {
-            fail("Cannot configure a backupninja '${basename}' as backupninja::ensure is NOT set to present (but ${backupninja::ensure})")
-        }
+  if ($backupninja::ensure != $ensure) {
+    if ($backupninja::ensure != 'present') {
+      fail("Cannot configure a backupninja '${basename}' as backupninja::ensure is NOT set to present (but ${backupninja::ensure})")
     }
+  }
 
-    if ! ($source_type in [ 'local', 'remote' ]) {
-        fail("backupninja::rsync 'source_type' parameter must be set to either 'local' or 'remote'")
-    }
-    if ! ($dest_type in [ 'local', 'remote' ]) {
-        fail("backupninja::rsync 'dest_type' parameter must be set to either 'local' or 'remote'")
-    }
-    if ! ($source_protocol in [ 'rsync', 'ssh' ]) {
-        fail("backupninja::rsync 'source_protocol' parameter must be set to either 'rsync' or 'ssh'")
-    }
-    if ! ($dest_protocol in [ 'rsync', 'ssh' ]) {
-        fail("backupninja::rsync 'dest_protocol' parameter must be set to either 'rsync' or 'ssh'")
-    }
+  if ! ($source_type in ['local', 'remote']) {
+    fail("backupninja::rsync 'source_type' parameter must be set to either 'local' or 'remote'")
+  }
+  if ! ($dest_type in ['local', 'remote']) {
+    fail("backupninja::rsync 'dest_type' parameter must be set to either 'local' or 'remote'")
+  }
+  if ! ($source_protocol in ['rsync', 'ssh']) {
+    fail("backupninja::rsync 'source_protocol' parameter must be set to either 'rsync' or 'ssh'")
+  }
+  if ! ($dest_protocol in ['rsync', 'ssh']) {
+    fail("backupninja::rsync 'dest_protocol' parameter must be set to either 'rsync' or 'ssh'")
+  }
 
-    $source_include_array = any2array($source_include)
-    $source_exclude_array = any2array($source_exclude)
+  $source_include_array = any2array($source_include)
+  $source_exclude_array = any2array($source_exclude)
 
-    file { "${mountpoint}/${backupdir}":
-        ensure  => 'directory',
-        path    => "${mountpoint}/${backupdir}",
-        owner   => $backupninja::params::configfile_owner,
-        group   => $backupninja::params::configfile_group,
-        mode    => $backupninja::params::taskfile_mode,
-        require => Exec["mkdir_${mountpoint}/${backupdir}"],
-    }
-    exec { "mkdir_${mountpoint}/${backupdir}":
-        path    => [ '/bin', '/usr/bin' ],
-        command => "mkdir -p ${mountpoint}/${backupdir}",
-        unless  => "test -d ${mountpoint}/${backupdir}",
-    }
+  file { "${mountpoint}/${backupdir}":
+    ensure  => 'directory',
+    path    => "${mountpoint}/${backupdir}",
+    owner   => $backupninja::params::configfile_owner,
+    group   => $backupninja::params::configfile_group,
+    mode    => $backupninja::params::taskfile_mode,
+    require => Exec["mkdir_${mountpoint}/${backupdir}"],
+  }
+  exec { "mkdir_${mountpoint}/${backupdir}":
+    path    => ['/bin', '/usr/bin'],
+    command => "mkdir -p ${mountpoint}/${backupdir}",
+    unless  => "test -d ${mountpoint}/${backupdir}",
+  }
 
-    file { "${basename}.rsync":
-        ensure  => $ensure,
-        path    => "${backupninja::configdirectory}/${basename}.rsync",
-        owner   => $backupninja::params::configfile_owner,
-        group   => $backupninja::params::configfile_group,
-        mode    => $backupninja::params::taskfile_mode,
-        content => template('backupninja/backup.d/rsync.erb'),
-        require => Package['backupninja'],
-    }
-
+  file { "${basename}.rsync":
+    ensure  => $ensure,
+    path    => "${backupninja::configdirectory}/${basename}.rsync",
+    owner   => $backupninja::params::configfile_owner,
+    group   => $backupninja::params::configfile_group,
+    mode    => $backupninja::params::taskfile_mode,
+    content => template('backupninja/backup.d/rsync.erb'),
+    require => Package['backupninja'],
+  }
 }
-
-
-
