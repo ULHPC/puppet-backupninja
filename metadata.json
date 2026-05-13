@@ -1,6 +1,6 @@
 {
   "name": "ULHPC-backupninja",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "author": "UL HPC Team",
   "summary": "Install and configure backupninja",
   "license": "GPL-3.0",
