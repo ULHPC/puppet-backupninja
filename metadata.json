@@ -2,18 +2,15 @@
   "name": "ULHPC-backupninja",
   "version": "0.3.0",
   "author": "UL HPC Team",
-  "mail": "hpc-sysadmins@uni.lu",
   "summary": "Install and configure backupninja",
-  "description": "Install and configure backupninja",
   "license": "GPL-3.0",
   "source": "https://github.com/ULHPC/puppet-backupninja",
   "project_page": "https://github.com/ULHPC/puppet-backupninja",
   "issues_url": "https://github.com/ULHPC/puppet-backupninja/issues",
-  "forge_url": "https://forge.puppetlabs.com/ULHPC/backupninja",
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",
-      "version_requirement": ">=6.6.0 <7.0.0"
+      "version_requirement": ">=6.6.0 <10.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -25,9 +22,24 @@
       ]
     },
     {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "6",
+        "7",
+        "8"
+      ]
+    },
+    {
       "operatingsystem": "Centos",
       "operatingsystemrelease": [
-        "6"
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Rocky",
+      "operatingsystemrelease": [
+        "8"
       ]
     }
   ],
@@ -40,21 +52,5 @@
     "ldap",
     "mysql",
     "postgresql"
-  ],
-  "classes": [
-    "backupninja",
-    "backupninja::common",
-    "backupninja::common::debian",
-    "backupninja::common::redhat",
-    "backupninja::params"
-  ],
-  "definitions": [
-    "backupninja::distantlvm",
-    "backupninja::distantqcow2",
-    "backupninja::ldap",
-    "backupninja::mysql",
-    "backupninja::pgsql",
-    "backupninja::rsync"
-  ],
-  "docs_project": "ulhpc-backupninja"
+  ]
 }

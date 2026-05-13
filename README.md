@@ -1,5 +1,3 @@
--*- mode: markdown; mode: visual-line;  -*-
-
 # Backupninja Puppet Module
 
 [![Puppet Forge](http://img.shields.io/puppetforge/v/ULHPC/backupninja.svg)](https://forge.puppetlabs.com/ULHPC/backupninja)
@@ -8,7 +6,7 @@
 
 Install and configure backupninja
 
-      Copyright (c) 2017 UL HPC Team <hpc-sysadmins@uni.lu>
+      Copyright (c) 2026 UL HPC Team <hpc-sysadmins@uni.lu>
 
 
 | [Project Page](https://github.com/ULHPC/puppet-backupninja) | [Sources](https://github.com/ULHPC/puppet-backupninja) | [Issues](https://github.com/ULHPC/puppet-backupninja/issues) |
