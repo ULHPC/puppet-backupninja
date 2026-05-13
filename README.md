@@ -53,24 +53,6 @@ Use it as follows:
 
      include ' backupninja'
 
-See also [`tests/init.pp`](tests/init.pp)
-
-### Class `backupninja::common`
-
-See [`tests/common.pp`](tests/common.pp)
-
-### Class `backupninja::common::debian`
-
-See [`tests/common/debian.pp`](tests/common/debian.pp)
-
-### Class `backupninja::common::redhat`
-
-See [`tests/common/redhat.pp`](tests/common/redhat.pp)
-
-### Class `backupninja::params`
-
-See [`tests/params.pp`](tests/params.pp)
-
 ### Definition `backupninja::distantlvm`
 
 The definition `backupninja::distantlvm` provides a way to configure our own `distantlvm`
